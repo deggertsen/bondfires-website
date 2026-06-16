@@ -1,0 +1,2 @@
+/invite/camp/:code /camp-invite.html 200
+/invite/:code /invite.html 200

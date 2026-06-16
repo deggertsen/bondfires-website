@@ -72,8 +72,9 @@
       document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('invite-code').textContent = code;
 
-        // Try opening the app via intent on Android
-        const intentUrl = 'intent://invite/' + code + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent('https://play.google.com/store/apps/details?id=org.bondfires');end;';
+        // Try opening the app via intent on Android.
+        const encodedCode = encodeURIComponent(code);
+        const intentUrl = 'intent://bondfires.app/invite/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent('https://play.google.com/store/apps/details?id=org.bondfires');end;';
         const anchor = document.getElementById('android-link');
         if (anchor) anchor.href = intentUrl;
 

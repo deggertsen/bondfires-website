@@ -67,7 +67,8 @@
       document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('invite-code').textContent = code;
 
-        const intentUrl = 'intent://invite/camp/' + code + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent('https://play.google.com/store/apps/details?id=org.bondfires');end;';
+        const encodedCode = encodeURIComponent(code);
+        const intentUrl = 'intent://bondfires.app/invite/camp/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent('https://play.google.com/store/apps/details?id=org.bondfires');end;';
         const anchor = document.getElementById('android-link');
         if (anchor) anchor.href = intentUrl;
 
