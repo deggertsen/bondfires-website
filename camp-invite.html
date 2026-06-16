@@ -58,19 +58,49 @@
       font-size: 15px;
     }
     .app-store-button:hover { background: #C46A30; }
+    .app-store-button.secondary { background: #2E2E34; }
+    .app-store-button.secondary:hover { background: #3A3A42; }
+    [hidden] { display: none !important; }
   </style>
   <script>
-    const pathParts = window.location.pathname.split('/');
-    const code = pathParts[pathParts.length - 1];
+    const appStoreUrl = 'https://apps.apple.com/us/app/bondfires/id6755933598';
+    const playStoreUrl = 'https://play.google.com/store/apps/details?id=org.bondfires';
+
+    function getInviteCode() {
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      if (pathParts[0] !== 'invite' || pathParts[1] !== 'camp' || !pathParts[2]) return null;
+      return pathParts[2];
+    }
+
+    function getDisplayCode(code) {
+      try {
+        return decodeURIComponent(code);
+      } catch {
+        return code;
+      }
+    }
+
+    const code = getInviteCode();
 
     if (code && code.length > 0) {
       document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('invite-code').textContent = code;
-
         const encodedCode = encodeURIComponent(code);
-        const intentUrl = 'intent://bondfires.app/invite/camp/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent('https://play.google.com/store/apps/details?id=org.bondfires');end;';
-        const anchor = document.getElementById('android-link');
-        if (anchor) anchor.href = intentUrl;
+        const appSchemeUrl = 'bondfires://invite/camp/' + encodedCode;
+        const intentUrl = 'intent://bondfires.app/invite/camp/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent(playStoreUrl) + ';end;';
+        const isAndroid = /Android/i.test(window.navigator.userAgent);
+        const isIOS = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+
+        document.getElementById('invite-code').textContent = getDisplayCode(code);
+
+        const openAppLink = document.getElementById('open-app-link');
+        if (openAppLink) openAppLink.href = isAndroid ? intentUrl : appSchemeUrl;
+
+        const appStoreLink = document.getElementById('app-store-link');
+        const playStoreLink = document.getElementById('play-store-link');
+        if (appStoreLink) appStoreLink.href = appStoreUrl;
+        if (playStoreLink) playStoreLink.href = playStoreUrl;
+        if (isAndroid && appStoreLink) appStoreLink.hidden = true;
+        if (isIOS && playStoreLink) playStoreLink.hidden = true;
 
         setTimeout(function() {
           document.body.classList.add('show-fallback');
@@ -89,8 +119,9 @@
       <div class="code-value" id="invite-code">•••</div>
     </div>
     <div class="app-store-buttons">
-      <a class="app-store-button" href="https://apps.apple.com/us/app/bondfires/id6755933598">Get on App Store</a>
-      <a id="android-link" class="app-store-button" href="https://play.google.com/store/apps/details?id=org.bondfires">Get on Play Store</a>
+      <a id="open-app-link" class="app-store-button" href="bondfires://invite/camp/">Open in Bondfires</a>
+      <a id="app-store-link" class="app-store-button secondary" href="https://apps.apple.com/us/app/bondfires/id6755933598">App Store</a>
+      <a id="play-store-link" class="app-store-button secondary" href="https://play.google.com/store/apps/details?id=org.bondfires">Play Store</a>
     </div>
   </div>
 </body>
