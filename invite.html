@@ -120,7 +120,22 @@
       const isAndroid = /Android/i.test(window.navigator.userAgent);
       const isIOS = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
 
-      if (!code) return;
+      const codeBox = document.getElementById('invite-code-box');
+      const openAppLink = document.getElementById('open-app-link');
+      const appStoreLink = document.getElementById('app-store-link');
+      const playStoreLink = document.getElementById('play-store-link');
+      const note = document.getElementById('invite-note');
+
+      if (isAndroid && appStoreLink) appStoreLink.hidden = true;
+      if (isIOS && playStoreLink) playStoreLink.hidden = true;
+      if (note && !isIOS) note.hidden = true;
+
+      if (!code) {
+        if (codeBox) codeBox.hidden = true;
+        if (note) note.hidden = true;
+        if (openAppLink) openAppLink.hidden = true;
+        return;
+      }
 
       const encodedCode = encodeURIComponent(code);
       const appSchemeUrl = 'bondfires://invite/' + encodedCode;
@@ -128,11 +143,6 @@
       const intentUrl = 'intent://bondfires.app/invite/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent(playStoreUrl) + ';end;';
 
       document.getElementById('invite-code').textContent = getDisplayCode(code);
-
-      const openAppLink = document.getElementById('open-app-link');
-      const appStoreLink = document.getElementById('app-store-link');
-      const playStoreLink = document.getElementById('play-store-link');
-      const note = document.getElementById('invite-note');
 
       if (openAppLink) openAppLink.href = isAndroid ? intentUrl : appSchemeUrl;
       if (appStoreLink) {
@@ -142,9 +152,6 @@
         });
       }
       if (playStoreLink) playStoreLink.href = playStoreUrl;
-      if (isAndroid && appStoreLink) appStoreLink.hidden = true;
-      if (isIOS && playStoreLink) playStoreLink.hidden = true;
-      if (note && !isIOS) note.hidden = true;
     });
   </script>
 </head>
@@ -153,7 +160,7 @@
     <div class="icon">B</div>
     <h1>You're invited to Bondfires.</h1>
     <p>Download the app to join.</p>
-    <div class="code">
+    <div class="code" id="invite-code-box">
       <div class="code-label">Invite Code</div>
       <div class="code-value" id="invite-code">...</div>
     </div>
