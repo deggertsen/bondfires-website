@@ -22,7 +22,7 @@
       border: 1px solid #2E2E34;
       border-radius: 20px;
       padding: 40px 32px;
-      max-width: 400px;
+      max-width: 420px;
       width: 100%;
     }
     .icon {
@@ -34,7 +34,9 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 24px;
-      font-size: 32px;
+      font-size: 30px;
+      font-weight: 900;
+      color: #fff;
     }
     h1 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
     p { font-size: 15px; color: #9E9E9E; line-height: 1.5; margin-bottom: 24px; }
@@ -42,20 +44,37 @@
       background: #2E2E34;
       border-radius: 12px;
       padding: 16px;
+      margin-bottom: 12px;
+    }
+    .code-label {
+      font-size: 11px;
+      color: #9E9E9E;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .code-value {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      overflow-wrap: anywhere;
+    }
+    .note {
+      font-size: 12px;
+      color: #9E9E9E;
       margin-bottom: 24px;
     }
-    .code-label { font-size: 11px; color: #9E9E9E; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .code-value { font-size: 28px; font-weight: 900; letter-spacing: 2px; }
     .app-store-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .app-store-button {
       display: inline-block;
       background: #FF6B35;
       color: #fff;
       font-weight: 700;
-      padding: 14px 28px;
+      padding: 14px 24px;
       border-radius: 14px;
       text-decoration: none;
       font-size: 15px;
+      min-width: 132px;
     }
     .app-store-button:hover { background: #E55D2B; }
     .app-store-button.secondary { background: #2E2E34; }
@@ -64,12 +83,13 @@
   </style>
   <script>
     const appStoreUrl = 'https://apps.apple.com/us/app/bondfires/id6755933598';
-    const playStoreUrl = 'https://play.google.com/store/apps/details?id=org.bondfires';
+    const playStoreBaseUrl = 'https://play.google.com/store/apps/details?id=org.bondfires';
 
     function getInviteCode() {
       const pathParts = window.location.pathname.split('/').filter(Boolean);
-      if (pathParts[0] !== 'invite' || !pathParts[1]) return null;
-      return pathParts[1];
+      if (pathParts[0] !== 'invite') return null;
+      if (pathParts[1] === 'camp') return pathParts[2] || null;
+      return pathParts[1] || null;
     }
 
     function getDisplayCode(code) {
@@ -80,53 +100,66 @@
       }
     }
 
-    const code = getInviteCode();
-
-    // Attempt to open the app via universal link
-    // The full URL itself IS the universal link target
-    // iOS will intercept this if the app is installed
-
-    if (code && code.length > 0) {
-      document.addEventListener('DOMContentLoaded', function() {
-        const encodedCode = encodeURIComponent(code);
-        const appSchemeUrl = 'bondfires://invite/' + encodedCode;
-        const intentUrl = 'intent://bondfires.app/invite/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent(playStoreUrl) + ';end;';
-        const isAndroid = /Android/i.test(window.navigator.userAgent);
-        const isIOS = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
-
-        document.getElementById('invite-code').textContent = getDisplayCode(code);
-
-        const openAppLink = document.getElementById('open-app-link');
-        if (openAppLink) openAppLink.href = isAndroid ? intentUrl : appSchemeUrl;
-
-        const appStoreLink = document.getElementById('app-store-link');
-        const playStoreLink = document.getElementById('play-store-link');
-        if (appStoreLink) appStoreLink.href = appStoreUrl;
-        if (playStoreLink) playStoreLink.href = playStoreUrl;
-        if (isAndroid && appStoreLink) appStoreLink.hidden = true;
-        if (isIOS && playStoreLink) playStoreLink.hidden = true;
-
-        // For iOS, the universal link itself IS the trigger
-        // The page loads, iOS intercepts and opens the app
-        // If we're still here after 2s, show the fallback
-        setTimeout(function() {
-          document.body.classList.add('show-fallback');
-        }, 2000);
-      });
+    function getPlayStoreUrl(code) {
+      const referrer = encodeURIComponent('invite=' + getDisplayCode(code));
+      return playStoreBaseUrl + '&referrer=' + referrer;
     }
+
+    async function copyInviteCode(code) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(getDisplayCode(code));
+        }
+      } catch {
+        // Clipboard is best-effort; the code stays visible on the page.
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const code = getInviteCode();
+      const isAndroid = /Android/i.test(window.navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+
+      if (!code) return;
+
+      const encodedCode = encodeURIComponent(code);
+      const appSchemeUrl = 'bondfires://invite/' + encodedCode;
+      const playStoreUrl = getPlayStoreUrl(code);
+      const intentUrl = 'intent://bondfires.app/invite/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent(playStoreUrl) + ';end;';
+
+      document.getElementById('invite-code').textContent = getDisplayCode(code);
+
+      const openAppLink = document.getElementById('open-app-link');
+      const appStoreLink = document.getElementById('app-store-link');
+      const playStoreLink = document.getElementById('play-store-link');
+      const note = document.getElementById('invite-note');
+
+      if (openAppLink) openAppLink.href = isAndroid ? intentUrl : appSchemeUrl;
+      if (appStoreLink) {
+        appStoreLink.href = appStoreUrl;
+        appStoreLink.addEventListener('click', function() {
+          copyInviteCode(code);
+        });
+      }
+      if (playStoreLink) playStoreLink.href = playStoreUrl;
+      if (isAndroid && appStoreLink) appStoreLink.hidden = true;
+      if (isIOS && playStoreLink) playStoreLink.hidden = true;
+      if (note && !isIOS) note.hidden = true;
+    });
   </script>
 </head>
 <body>
   <div class="card">
-    <div class="icon">🔥</div>
-    <h1>You're Invited</h1>
-    <p>Someone invited you to join their Personal Bondfire. Open the app to accept.</p>
+    <div class="icon">B</div>
+    <h1>You're invited to Bondfires.</h1>
+    <p>Download the app to join.</p>
     <div class="code">
       <div class="code-label">Invite Code</div>
-      <div class="code-value" id="invite-code">•••</div>
+      <div class="code-value" id="invite-code">...</div>
     </div>
+    <p id="invite-note" class="note">We'll remember your invite code when you install the app.</p>
     <div class="app-store-buttons">
-      <a id="open-app-link" class="app-store-button" href="bondfires://invite/">Open in Bondfires</a>
+      <a id="open-app-link" class="app-store-button" href="bondfires://invite/">Open App</a>
       <a id="app-store-link" class="app-store-button secondary" href="https://apps.apple.com/us/app/bondfires/id6755933598">App Store</a>
       <a id="play-store-link" class="app-store-button secondary" href="https://play.google.com/store/apps/details?id=org.bondfires">Play Store</a>
     </div>

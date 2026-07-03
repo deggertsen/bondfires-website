@@ -1,2 +1,2 @@
-/invite/camp/:code /camp-invite 200
+/invite/camp/:code /invite 200
 /invite/:code /invite 200
