@@ -16,6 +16,7 @@ const redirects = readFileSync(resolve(root, '_redirects'), 'utf8')
 for (const route of [
   '/invite/:code /invite 200',
   '/invite/camp/:code /invite 200',
+  '/invite/family/:code /invite 200',
   '/personal-bondfire/:bondfireId/:code /invite 200',
 ]) {
   if (!redirects.split(/\r?\n/).includes(route)) errors.push(`_redirects is missing: ${route}`)

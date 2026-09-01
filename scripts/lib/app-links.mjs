@@ -9,6 +9,7 @@ export const UPLOAD_FINGERPRINT =
 export const REQUIRED_APPLE_PATHS = [
   '/invite/*',
   '/invite/camp/*',
+  '/invite/family/*',
   '/personal-bondfire/*',
 ]
 

@@ -53,18 +53,30 @@ test('production validation does not mistake the known upload key for the Play k
   ])
 })
 
-test('AASA covers invite, camp invite, and personal Bondfire paths', () => {
+test('AASA covers standard, camp, controlled-family, and personal Bondfire paths', () => {
   const valid = {
     applinks: {
       details: [
         {
           appID: APPLE_APP_ID,
-          paths: ['/invite/*', '/invite/camp/*', '/personal-bondfire/*'],
+          paths: [
+            '/invite/*',
+            '/invite/camp/*',
+            '/invite/family/*',
+            '/personal-bondfire/*',
+          ],
         },
       ],
     },
   }
   assert.deepEqual(validateAasa(valid), [])
-  valid.applinks.details[0].paths.pop()
+  valid.applinks.details[0].paths = valid.applinks.details[0].paths.filter(
+    (path) => path !== '/invite/family/*',
+  )
+  assert.deepEqual(validateAasa(valid), ['AASA is missing /invite/family/*'])
+  valid.applinks.details[0].paths.push('/invite/family/*')
+  valid.applinks.details[0].paths = valid.applinks.details[0].paths.filter(
+    (path) => path !== '/personal-bondfire/*',
+  )
   assert.deepEqual(validateAasa(valid), ['AASA is missing /personal-bondfire/*'])
 })
