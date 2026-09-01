@@ -104,7 +104,13 @@
       const pathParts = window.location.pathname.split('/').filter(Boolean);
       if (pathParts[0] !== 'invite') return null;
       if (pathParts[1] === 'camp') return pathParts[2] || null;
+      if (pathParts[1] === 'family') return pathParts[2] || null;
       return pathParts[1] || null;
+    }
+
+    function isFamilyInvite() {
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      return pathParts[0] === 'invite' && pathParts[1] === 'family';
     }
 
     function getDisplayCode(code) {
@@ -132,6 +138,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       const code = getInviteCode();
+      const familyInvite = isFamilyInvite();
       const isAndroid = /Android/i.test(window.navigator.userAgent);
       const isIOS = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
 
@@ -153,11 +160,17 @@
       }
 
       const encodedCode = encodeURIComponent(code);
-      const appSchemeUrl = 'bondfires://invite/' + encodedCode;
+      const invitePath = familyInvite ? 'invite/family/' : 'invite/';
+      const appSchemeUrl = 'bondfires://' + invitePath + encodedCode;
       const playStoreUrl = getPlayStoreUrl(code);
-      const intentUrl = 'intent://bondfires.app/invite/' + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent(playStoreUrl) + ';end;';
+      const intentUrl = 'intent://bondfires.app/' + invitePath + encodedCode + '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' + encodeURIComponent(playStoreUrl) + ';end;';
 
       document.getElementById('invite-code').textContent = getDisplayCode(code);
+      if (familyInvite) {
+        document.getElementById('invite-title').textContent = 'Private family Hearth invitation';
+        document.getElementById('invite-description').textContent = 'Open Bondfires to review and explicitly accept or decline. Accept only if you know and trust the sender offline.';
+        document.getElementById('invite-code-label').textContent = 'One-time invitation';
+      }
 
       if (openAppLink) openAppLink.href = isAndroid ? intentUrl : appSchemeUrl;
       if (appStoreLink) {
@@ -173,10 +186,10 @@
 <body>
   <div class="card">
     <div class="icon">B</div>
-    <h1>You're invited to Bondfires.</h1>
-    <p>Download the app to join.</p>
+    <h1 id="invite-title">You're invited to Bondfires.</h1>
+    <p id="invite-description">Download the app to join.</p>
     <div class="code" id="invite-code-box">
-      <div class="code-label">Invite Code</div>
+      <div class="code-label" id="invite-code-label">Invite Code</div>
       <div class="code-value" id="invite-code">...</div>
     </div>
     <p id="invite-note" class="note">We'll remember your invite code when you install the app.</p>
