@@ -5,6 +5,7 @@
       {
         "appID": "A9BJ2VA78M.org.bondfires",
         "paths": [
+          "/invite/family/*",
           "/invite/*",
           "/invite/camp/*",
           "/personal-bondfire/*"
