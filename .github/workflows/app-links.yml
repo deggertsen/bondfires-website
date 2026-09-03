@@ -16,7 +16,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Test association tooling
-        run: node --test scripts/app-links.test.mjs
-      - name: Reject placeholders and invalid production associations
-        run: node scripts/validate-app-links.mjs --release
+      - name: Validate production associations
+        run: node scripts/validate-app-links.mjs

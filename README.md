@@ -37,37 +37,15 @@ Every push to `main` publishes automatically. No API tokens, deploy commands, or
 
 ## Mobile app association files
 
-The files under `.well-known/` are security-sensitive production contracts for
-Universal Links and Android App Links. Validate them before deployment:
+Before deploying changes to `.well-known/`, run:
 
 ```bash
-node --test scripts/app-links.test.mjs
-node scripts/validate-app-links.mjs --release
+node scripts/validate-app-links.mjs
 ```
 
-`assetlinks.json` must begin with the **Google Play App Signing** SHA-256 from
-Play Console, not the upload certificate printed from a local AAB or EAS
-credentials. The certificate fingerprint is public metadata. Additional valid
-fingerprints, such as the upload key for explicitly supported non-Play builds,
-may follow it.
-
-To safely replace the one draft marker and authorize only Play-distributed builds:
-
-```bash
-node scripts/configure-app-links.mjs \
-  --play-sha256 'AA:BB:...:FF'
-node scripts/validate-app-links.mjs --release
-```
-
-Only if Bondfires intentionally supports a directly distributed build signed by
-the known upload key, add `--include-upload` to the configure command. Do not add
-it for Play internal, closed, open, or production tracks; Google Play re-signs
-those installs with the Play App Signing key.
-
-Copy the value from **Google Play Console → Protected with Play → Play app
-signing → App signing key certificate → SHA-256 certificate fingerprint**. Do
-not merge or deploy while `PLAY_APP_SIGNING_SHA256_FROM_GOOGLE_PLAY_CONSOLE`
-remains in the file.
+`assetlinks.json` must contain the public **Google Play App Signing** SHA-256
+from **Google Play Console → Protected with Play → Play app signing**. Do not
+use the EAS/local upload certificate; Google re-signs Play-distributed builds.
 
 ## Project structure
 
@@ -78,7 +56,7 @@ remains in the file.
 ├── _headers            # Cloudflare cache rules
 ├── css/
 ├── js/
-├── scripts/             # Association-file generator and validation
+├── scripts/             # Association-file validation
 └── images/
 ```
 
