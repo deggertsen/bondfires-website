@@ -31,8 +31,21 @@ This repo has **no build step** and **no dependencies**. Use native Pages Git in
 5. Deploy, then add custom domains under **Custom domains**:
    - `bondfires.org`
    - `www.bondfires.org`
+   - `bondfires.app`
 
 Every push to `main` publishes automatically. No API tokens, deploy commands, or `SKIP_DEPENDENCY_INSTALL` needed.
+
+## Mobile app association files
+
+Before deploying changes to `.well-known/`, run:
+
+```bash
+node scripts/validate-app-links.mjs
+```
+
+`assetlinks.json` must contain the public **Google Play App Signing** SHA-256
+from **Google Play Console → Protected with Play → Play app signing**. Do not
+use the EAS/local upload certificate; Google re-signs Play-distributed builds.
 
 ## Project structure
 
@@ -43,6 +56,7 @@ Every push to `main` publishes automatically. No API tokens, deploy commands, or
 ├── _headers            # Cloudflare cache rules
 ├── css/
 ├── js/
+├── scripts/             # Association-file validation
 └── images/
 ```
 
