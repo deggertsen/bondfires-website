@@ -19,7 +19,7 @@ npm run validate   # check the app association files before touching .well-known
 ```
 src/
   pages/            one .astro file per route (index, about, pricing, faq, download, get,
-                    support, for/groups, for/mens-groups, invite, legal pages, 404)
+                    support, for/groups, invite, legal pages, 404)
   layouts/          Base.astro (head/SEO/nav/footer), Legal.astro
   components/       Nav, Footer, Logo, StoreBadges, Qr, PhoneMock, EmberCanvas
   lib/site.ts       store URLs, emails, nav, the three-step story

@@ -8,12 +8,12 @@ export const FAQ: Faq[] = [
   {
     q: 'What is Bondfires?',
     home: true,
-    a: 'Bondfires is an app where a small group keeps talking between meetups using short videos instead of text. Someone records a Bondfire, a video about what’s on their mind. The rest of the group watches and replies with their own videos whenever they have a few minutes.',
+    a: 'Bondfires is an app where a small group keeps talking between meetups using video instead of text. Someone records a Bondfire, a video about what’s on their mind. The rest of the group watches and replies with their own videos whenever they have a few minutes.',
   },
   {
     q: 'Do we all need to be online at the same time?',
     home: true,
-    a: 'No. That’s the point. You record when you have five minutes, your people reply when they have theirs. Early morning, lunch break, after the kids are down. The thread is always there.',
+    a: 'No. That’s the point. You record when you have time, your people reply when they have theirs. Early morning, lunch break, after the kids are down. The thread is always there.',
   },
   {
     q: 'What is a camp?',
@@ -31,7 +31,7 @@ export const FAQ: Faq[] = [
   {
     q: 'Why video instead of text?',
     home: true,
-    a: 'Because your face and your voice carry what text drops. Tone, hesitation, a laugh, the thing you almost didn’t say. A two-minute video from a friend lands differently than two paragraphs.',
+    a: 'Because your face and your voice carry what text drops. Tone, hesitation, a laugh, the thing you almost didn’t say. A video from a friend lands differently than two paragraphs. And you don’t have to choose: every Bondfire gets captions and a short written summary, so you can skim a thread, or catch up somewhere you can’t listen.',
   },
   {
     q: 'I’m not comfortable on camera.',
@@ -43,8 +43,12 @@ export const FAQ: Faq[] = [
     a: 'Only the members of the camp you posted in. Bondfires are never public on the internet, we don’t sell your data, and we don’t use your conversations for advertising. Read the privacy policy for the full picture.',
   },
   {
+    q: 'Do I have to watch everything?',
+    a: 'No. Every Bondfire is captioned and gets a short written summary and a few tags, and each thread gets a title. You can read the gist of a thread in a few seconds and watch the ones that matter. Captions also mean you can follow along with the sound off.',
+  },
+  {
     q: 'How long can a video be?',
-    a: 'Free members can respond with up to 5 minutes. Plus raises that to 15 minutes, Premium to 30, and Pro has no limit.',
+    a: 'As long as it needs to be, within your plan. Free members can respond with up to 5 minutes; Plus raises that to 15, Premium to 30, and Pro has no limit. Camp leaders can also set a shorter limit for their own camp if they want responses kept tight.',
   },
   {
     q: 'Can I bring my existing group?',
