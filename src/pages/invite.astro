@@ -1,0 +1,216 @@
+---
+/**
+ * Invite deep-link landing. Served for /invite, /invite/:code and
+ * /invite/camp/:code via public/_redirects (200 rewrites). Behaviour is the
+ * same as the previous standalone page; only the styling moved to brand tokens.
+ */
+import Base from '../layouts/Base.astro'
+import Logo from '../components/Logo.astro'
+import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/site'
+---
+
+<Base
+  title="You’re invited"
+  description="You’ve been invited to a camp on Bondfires. Install the app to join."
+  path="/invite"
+  minimal
+  noindex
+>
+  <section class="wrap">
+    <div class="card">
+      <div class="mark"><Logo size={44} wordmark={false} /></div>
+      <h1>You’re invited to Bondfires.</h1>
+      <p class="muted">Install the app to join your camp.</p>
+
+      <div class="code" id="invite-code-box">
+        <div class="code-label">Invite code</div>
+        <div class="code-value" id="invite-code">…</div>
+      </div>
+      <p id="invite-note" class="note muted">We’ll remember your invite code when you install the app.</p>
+
+      <a id="open-app-link" class="btn btn-primary open" href="bondfires://invite/">Open the app</a>
+      <div class="stores">
+        <a id="app-store-link" class="store" href={APP_STORE_URL} data-track="store_click" data-platform="ios" data-campaign="invite">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.56-1.701" /></svg>
+          App Store
+        </a>
+        <a id="play-store-link" class="store" href={PLAY_STORE_URL} data-track="store_click" data-platform="android" data-campaign="invite">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z" /></svg>
+          Google Play
+        </a>
+      </div>
+      <a class="what muted" href="/">What is Bondfires?</a>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ APP_STORE_URL, PLAY_STORE_URL }}>
+    function getInviteCode() {
+      const parts = window.location.pathname.split('/').filter(Boolean)
+      if (parts[0] !== 'invite') return null
+      if (parts[1] === 'camp') return parts[2] || null
+      return parts[1] || null
+    }
+    function getDisplayCode(code) {
+      try {
+        return decodeURIComponent(code)
+      } catch {
+        return code
+      }
+    }
+    function getPlayStoreUrl(code) {
+      const referrer = encodeURIComponent('invite=' + getDisplayCode(code))
+      return PLAY_STORE_URL + '&referrer=' + referrer
+    }
+    async function copyInviteCode(code) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(getDisplayCode(code))
+        }
+      } catch {
+        // Clipboard is best-effort; the code stays visible on the page.
+      }
+    }
+
+    const code = getInviteCode()
+    const isAndroid = /Android/i.test(navigator.userAgent)
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+
+    const codeBox = document.getElementById('invite-code-box')
+    const openAppLink = document.getElementById('open-app-link')
+    const appStoreLink = document.getElementById('app-store-link')
+    const playStoreLink = document.getElementById('play-store-link')
+    const note = document.getElementById('invite-note')
+
+    if (isAndroid && appStoreLink) appStoreLink.hidden = true
+    if (isIOS && playStoreLink) playStoreLink.hidden = true
+    if (note && !isIOS) note.hidden = true
+
+    if (!code) {
+      if (codeBox) codeBox.hidden = true
+      if (note) note.hidden = true
+      if (openAppLink) openAppLink.hidden = true
+    } else {
+      const encoded = encodeURIComponent(code)
+      const appSchemeUrl = 'bondfires://invite/' + encoded
+      const playStoreUrl = getPlayStoreUrl(code)
+      const intentUrl =
+        'intent://bondfires.app/invite/' +
+        encoded +
+        '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' +
+        encodeURIComponent(playStoreUrl) +
+        ';end;'
+
+      document.getElementById('invite-code').textContent = getDisplayCode(code)
+      if (openAppLink) openAppLink.href = isAndroid ? intentUrl : appSchemeUrl
+      if (appStoreLink) {
+        appStoreLink.href = APP_STORE_URL
+        appStoreLink.addEventListener('click', () => copyInviteCode(code))
+      }
+      if (playStoreLink) playStoreLink.href = playStoreUrl
+    }
+  </script>
+</Base>
+
+<style>
+  .wrap {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: var(--space-5);
+    background:
+      radial-gradient(60% 50% at 50% 0%, var(--glow), transparent 70%),
+      var(--obsidian);
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-xl);
+    padding: var(--space-7) var(--space-6);
+    text-align: center;
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+  }
+  .mark {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    background: var(--obsidian);
+    border: 1px solid var(--iron);
+    margin-bottom: var(--space-2);
+  }
+  h1 {
+    font-size: 1.7rem;
+    margin: 0;
+  }
+  .card > p {
+    margin: 0;
+  }
+  .code {
+    width: 100%;
+    background: var(--obsidian);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-top: var(--space-3);
+  }
+  .code-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 4px;
+  }
+  .code-value {
+    font-family: var(--display);
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    overflow-wrap: anywhere;
+  }
+  .note {
+    font-size: 0.85rem;
+  }
+  .open {
+    width: 100%;
+    margin-top: var(--space-2);
+  }
+  .stores {
+    display: flex;
+    gap: var(--space-3);
+    width: 100%;
+  }
+  .store {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--obsidian);
+    color: var(--smoke);
+    border: 1px solid var(--iron);
+    font-weight: 600;
+    padding: 13px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+  }
+  .store:hover {
+    text-decoration: none;
+    border-color: var(--copper);
+  }
+  .store svg {
+    width: 18px;
+    height: 18px;
+  }
+  .what {
+    font-size: 0.9rem;
+    margin-top: var(--space-3);
+  }
+  [hidden] {
+    display: none !important;
+  }
+</style>

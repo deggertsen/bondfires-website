@@ -1,0 +1,202 @@
+---
+import Base from '../../layouts/Base.astro'
+import StoreBadges from '../../components/StoreBadges.astro'
+import { SUPPORT_EMAIL } from '../../lib/site'
+
+const fits = [
+  ['Men’s groups', 'Church and faith-based groups', 'Recovery and support circles'],
+  ['Mastermind and founder groups', 'Veterans’ groups', 'Fraternity and alumni circles'],
+  ['Small-group Bible studies', 'Accountability partners', 'Any group with a leader and a rhythm'],
+]
+---
+
+<Base
+  title="Bring your group"
+  description="You lead a group that meets in person or on a call. Bondfires keeps the conversation going between meetings with short video threads. One leader sets up a camp; the whole group joins with a link."
+>
+  <section class="section hero">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">For group leaders</p>
+        <h1>Your group meets monthly. Bondfires is the other 29 days.</h1>
+        <p>
+          You already have the hard part: a group of people who show up for each other. What you don’t
+          have is a way to keep that going when the meeting ends. Bondfires gives your group one
+          private camp where members post short videos and answer each other between meetings, on
+          their own time.
+        </p>
+      </div>
+      <StoreBadges campaign="for_groups_hero" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How a leader sets it up</p>
+        <h2>An afternoon, not a project.</h2>
+      </div>
+      <ol class="how">
+        <li>
+          <h3>Create the camp</h3>
+          <p class="muted">Install Bondfires, go Pro, and create a private camp. Name it what your group already calls itself. Private camps are invite-only; nobody finds them by browsing.</p>
+        </li>
+        <li>
+          <h3>Share one link</h3>
+          <p class="muted">Send the invite link to your group chat or email list. Members install the free app, tap the link, and land in the camp. That’s the whole onboarding.</p>
+        </li>
+        <li>
+          <h3>Spark the first Bondfire</h3>
+          <p class="muted">Record two minutes: a question from your last meeting, a check-in prompt, something you’ve been sitting with. The first response usually arrives within a day.</p>
+        </li>
+        <li>
+          <h3>Set a rhythm</h3>
+          <p class="muted">Groups that thrive spark once a week. The Ember Rail shows everyone who has answered and who hasn’t, so nobody has to chase.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section why">
+    <div class="container">
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Members pay nothing</h3>
+          <p class="muted">One leader on Pro covers the camp. Everyone else joins, watches, and responds on the free tier. No one is asked for a card to be part of your group.</p>
+        </div>
+        <div class="card">
+          <h3>Private means private</h3>
+          <p class="muted">Videos are visible only to camp members. No public profiles, no discoverability for private camps, no ads. What is shared in the camp stays in the camp.</p>
+        </div>
+        <div class="card">
+          <h3>You stay in charge</h3>
+          <p class="muted">Approve members, remove them, set camp rules and response limits. Report tooling and moderation are built in, and safety reports reach us the same day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fits">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Who this fits</p>
+        <h2>Groups that already have a leader and a rhythm.</h2>
+      </div>
+      <div class="grid grid-3 fitlist">
+        {fits.map((col) => <ul>{col.map((f) => <li>{f}</li>)}</ul>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta">
+    <div class="container cta-card">
+      <div>
+        <h2>Want help setting up your first camp?</h2>
+        <p class="muted">
+          We set up the first camps by hand with each leader: a fifteen-minute call, and we’ll walk your
+          group through the first week. Email us and say who your group is.
+        </p>
+      </div>
+      <a href={`mailto:${SUPPORT_EMAIL}?subject=Setting%20up%20a%20camp%20for%20my%20group`} class="btn btn-primary btn-lg" data-track="leader_contact_click">Email the founders</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    background:
+      radial-gradient(60% 60% at 90% 20%, var(--glow), transparent 65%),
+      var(--obsidian);
+  }
+  .hero .section-head {
+    max-width: 46em;
+    margin-bottom: var(--space-6);
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+    max-width: 18ch;
+  }
+  .how {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    counter-reset: how;
+  }
+  @media (min-width: 800px) {
+    .how {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .how li {
+    counter-increment: how;
+    position: relative;
+    padding: var(--space-5) var(--space-5) var(--space-5) 76px;
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-lg);
+  }
+  .how li::before {
+    content: counter(how);
+    position: absolute;
+    left: var(--space-5);
+    top: var(--space-5);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--obsidian);
+    background: linear-gradient(135deg, var(--gold), var(--copper));
+  }
+  .how h3 {
+    margin-bottom: var(--space-2);
+  }
+  .how p {
+    margin: 0;
+  }
+  .why {
+    border-top: 1px solid var(--iron);
+    border-bottom: 1px solid var(--iron);
+  }
+  .why h3 {
+    margin-bottom: var(--space-2);
+  }
+  .why p {
+    margin: 0;
+  }
+  .fitlist ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .fitlist li {
+    padding: 14px 16px;
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-md);
+    color: var(--smoke);
+  }
+  .cta {
+    border-top: 1px solid var(--iron);
+  }
+  .cta-card {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .cta-card {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  .cta-card p {
+    margin: 0;
+    max-width: 50ch;
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+interface Props {
+  size?: number
+  wordmark?: boolean
+  class?: string
+}
+const { size = 28, wordmark = true, class: className = '' } = Astro.props
+---
+
+<span class={`logo ${className}`}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <defs>
+      <linearGradient id="bf-flame" x1="16" y1="3" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#F0AB68" />
+        <stop offset="0.55" stop-color="#D97736" />
+        <stop offset="1" stop-color="#A04E24" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M16 2.5c.6 4.2 3.2 6.6 5.6 9.3 2.3 2.6 4.4 5.3 4.4 9.2 0 5.5-4.5 9.5-10 9.5S6 26.5 6 21c0-3.6 1.8-6.1 3.9-8.4-.1 2.2.9 3.7 2.4 4.4C11.7 11.4 13.8 7.4 16 2.5Z"
+      fill="url(#bf-flame)"
+    />
+    <path
+      d="M16 15.5c.4 2.3 1.8 3.5 3 4.9 1.1 1.3 2 2.6 2 4.4 0 2.9-2.2 4.7-5 4.7s-5-1.8-5-4.7c0-1.7.8-2.9 1.9-4.1 0 1.1.5 1.8 1.2 2.1-.2-2.6.7-4.9 1.9-7.3Z"
+      fill="#141416"
+      opacity="0.92"
+    />
+    <path
+      d="M16 19.5c.3 1.4 1.1 2.1 1.8 2.9.6.7 1.2 1.5 1.2 2.5 0 1.7-1.3 2.8-3 2.8s-3-1.1-3-2.8c0-1 .5-1.7 1.1-2.4.1.6.4 1 .8 1.2-.1-1.5.4-2.8 1.1-4.2Z"
+      fill="#F0AB68"
+    />
+  </svg>
+  {wordmark && <span class="wordmark">Bondfires</span>}
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--smoke);
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .wordmark {
+    font-size: 1.25rem;
+  }
+</style>

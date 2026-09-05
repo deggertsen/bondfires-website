@@ -1,0 +1,12 @@
+---
+import Legal from '../layouts/Legal.astro'
+import content from '../legal/child-safety.html?raw'
+---
+
+<Legal
+  title="Child Safety Standards"
+  subtitle="Our commitment to preventing child sexual abuse and exploitation on our platform"
+  description="Bondfires’ child safety standards: prohibited content, how to report, and how we work with authorities."
+>
+  <Fragment set:html={content} />
+</Legal>

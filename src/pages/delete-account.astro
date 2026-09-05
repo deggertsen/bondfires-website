@@ -1,0 +1,12 @@
+---
+import Legal from '../layouts/Legal.astro'
+import content from '../legal/delete-account.html?raw'
+---
+
+<Legal
+  title="Delete Your Account"
+  subtitle="This page explains how to delete your Bondfires account and what happens to your data."
+  description="How to delete your Bondfires account from the app, and what happens to your videos and data afterwards."
+>
+  <Fragment set:html={content} />
+</Legal>

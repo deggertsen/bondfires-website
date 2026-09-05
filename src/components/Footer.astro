@@ -1,0 +1,108 @@
+---
+import Logo from './Logo.astro'
+import { TAGLINE, SUPPORT_EMAIL } from '../lib/site'
+const year = new Date().getFullYear()
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="cols">
+      <div class="brand">
+        <Logo />
+        <p class="muted tagline">{TAGLINE}</p>
+        <p class="muted small">Made by two friends who wanted their group to keep talking.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="/#how-it-works">How it works</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/download">Download</a></li>
+          <li><a href="/faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>For groups</h4>
+        <ul>
+          <li><a href="/for/groups">Bring your group</a></li>
+          <li><a href="/for/mens-groups">Men’s groups</a></li>
+          <li><a href="/about">About the founders</a></li>
+          <li><a href="/support">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Trust</h4>
+        <ul>
+          <li><a href="/community-guidelines">Community guidelines</a></li>
+          <li><a href="/child-safety">Child safety</a></li>
+          <li><a href="/privacy">Privacy policy</a></li>
+          <li><a href="/terms">Terms of service</a></li>
+          <li><a href="/delete-account">Delete your account</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <span class="muted small">© {year} Bondfires. All rights reserved.</span>
+      <a class="small" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--iron);
+    padding: var(--space-8) 0 var(--space-6);
+    background: var(--obsidian);
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  @media (min-width: 640px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 960px) {
+    .cols {
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    }
+  }
+  .tagline {
+    margin: var(--space-4) 0 var(--space-2);
+    font-weight: 500;
+    color: var(--smoke);
+  }
+  .small {
+    font-size: 0.9rem;
+  }
+  h4 {
+    font-family: var(--body);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin: 0 0 var(--space-3);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  ul a {
+    color: var(--smoke);
+    font-size: 0.97rem;
+  }
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--iron);
+  }
+</style>

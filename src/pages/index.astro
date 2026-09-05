@@ -1,0 +1,653 @@
+---
+import Base from '../layouts/Base.astro'
+import StoreBadges from '../components/StoreBadges.astro'
+import PhoneMock from '../components/PhoneMock.astro'
+import EmberCanvas from '../components/EmberCanvas.astro'
+import Qr from '../components/Qr.astro'
+import { STEPS, SITE_URL } from '../lib/site'
+import { FAQ } from '../lib/faq'
+
+const homeFaq = FAQ.filter((f) => f.home)
+
+const audiences = [
+  {
+    title: 'Men’s groups',
+    body: 'The Thursday group that meets once a month, if everyone can make it. Keep the conversation going the other 29 days.',
+    href: '/for/mens-groups',
+  },
+  {
+    title: 'Friends in different cities',
+    body: 'The five of you who were inseparable at 22 and now live in four time zones. A thread beats a text you never answer.',
+  },
+  {
+    title: 'Family, in a hearth',
+    body: 'Your own private space for siblings, parents, kids who moved out. Two minutes of Dad’s face on a Tuesday.',
+  },
+  {
+    title: 'Faith, recovery, and mastermind groups',
+    body: 'Groups that already have a leader and a rhythm. One person sets up the camp, everyone shows up between meetings.',
+    href: '/for/groups',
+  },
+]
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: homeFaq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+}
+const appLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Bondfires',
+  operatingSystem: 'iOS, Android',
+  applicationCategory: 'SocialNetworkingApplication',
+  description:
+    'Bondfires is where a small group keeps talking between meetups, with short video instead of text, on each person’s own schedule.',
+  url: SITE_URL,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+}
+---
+
+<Base
+  title="Bondfires · Your group, on your own time"
+  description="Bondfires is where your group keeps talking between meetups. Record a short video when you have five minutes; your people watch and reply when they have theirs. Free on iOS and Android."
+  path="/"
+  jsonLd={[appLd, faqLd]}
+>
+  <!-- 1. Hero -->
+  <section class="hero">
+    <EmberCanvas />
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Video conversations for small groups</p>
+        <h1>Your group, on your own time.</h1>
+        <p class="lede">
+          Record a short video when you have five minutes. Your people watch and reply when they have
+          theirs. No scheduling, no 400-message group chat.
+        </p>
+        <div class="hero-actions">
+          <StoreBadges campaign="home_hero" size="lg" />
+          <a href="#how-it-works" class="watch">See how it works ↓</a>
+        </div>
+        <p class="fine muted">Free to join and respond. iOS and Android.</p>
+      </div>
+      <div class="hero-phone">
+        <PhoneMock tilt />
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. The problem -->
+  <section class="section problem">
+    <div class="container">
+      <div class="problem-grid">
+        <p>Your group chat has 400 unread messages and zero actual conversation.</p>
+        <p>Your men’s group meets once a month. If everyone can make it.</p>
+        <p>The friend you’d call first hasn’t heard your voice since March.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. How it works -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Three steps. The third one is the whole point.</h2>
+      </div>
+      <ol class="steps">
+        {
+          STEPS.map((s, i) => (
+            <li class="step">
+              <span class="num" aria-hidden="true">{i + 1}</span>
+              <div>
+                <h3>{s.title}</h3>
+                <p class="muted">{s.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. What a Bondfire looks like -->
+  <section class="section thread-demo">
+    <div class="container demo-grid">
+      <div>
+        <p class="eyebrow">A Bondfire, up close</p>
+        <h2>One spark. A stack of faces answering it.</h2>
+        <p class="lede">
+          Someone records two minutes about the thing they didn’t say at dinner. By the next morning
+          three people have answered, each in their own time, each with their own face.
+        </p>
+        <ul class="demo-points">
+          <li><strong>The Ember Rail</strong> sits at the top of Home. A copper ring means someone answered you. A gold dot means your spark is still waiting.</li>
+          <li><strong>Threads, not feeds.</strong> Responses stack under the spark so a conversation stays a conversation.</li>
+          <li><strong>Titles and tags, written for you.</strong> Every video is transcribed and summarised so you can find the one about the job offer in October.</li>
+        </ul>
+      </div>
+      <div class="demo-thread" aria-hidden="true">
+        <div class="spark">
+          <span class="av" style="background:#6B5B95">M</span>
+          <div>
+            <span class="who">Marcus <small>sparked · Thursday Guys</small></span>
+            <span class="ttl">The thing I didn’t say at dinner</span>
+            <span class="dur">2:14</span>
+          </div>
+        </div>
+        <div class="resp">
+          <span class="av" style="background:#4B6587">J</span>
+          <div><span class="who">Jake <small>replied · 3h later</small></span><span class="dur">1:40</span></div>
+        </div>
+        <div class="resp">
+          <span class="av" style="background:#3C6E71">T</span>
+          <div><span class="who">Theo <small>replied · that night</small></span><span class="dur">4:02</span></div>
+        </div>
+        <div class="resp you">
+          <span class="av" style="background:#A04E24">D</span>
+          <div><span class="who">You <small>next morning, from the driveway</small></span><span class="dur rec">● Record</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Who gathers here -->
+  <section class="section who">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Who gathers here</p>
+        <h2>Built for groups that already exist.</h2>
+        <p>Bondfires isn’t a feed of strangers. It’s the people you already have, showing up more often.</p>
+      </div>
+      <div class="grid grid-2 aud">
+        {
+          audiences.map((a) => (
+            <article class="card aud-card">
+              <h3>{a.title}</h3>
+              <p class="muted">{a.body}</p>
+              {a.href && (
+                <a href={a.href} class="more">
+                  Learn more →
+                </a>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Why video, why your own time -->
+  <section class="section why">
+    <div class="container">
+      <div class="grid grid-3">
+        <div>
+          <h3>Faces, not bubbles.</h3>
+          <p class="muted">A two-minute video carries tone, a laugh, the pause before the honest part. Text drops all of it.</p>
+        </div>
+        <div>
+          <h3>Nobody has to be free at 8.</h3>
+          <p class="muted">Post when you can. Reply when you can. The thread waits, and the notification tells you exactly who answered.</p>
+        </div>
+        <div>
+          <h3>Small, private, and yours.</h3>
+          <p class="muted">Only your camp sees your videos. No ads, no algorithm, no strangers. What’s shared in a camp stays in the camp.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. From the founders -->
+  <section class="section founders">
+    <div class="container founders-grid">
+      <div class="portraits" aria-hidden="true">
+        <span class="portrait">D</span>
+        <span class="portrait">J</span>
+      </div>
+      <div>
+        <p class="eyebrow">From the founders</p>
+        <h2>Two engineers. One friendship that kept dying in the group chat.</h2>
+        <p class="lede">
+          David and Jake built Bondfires because the people they cared about most were the people they
+          talked to least. Not for lack of wanting to. For lack of a Tuesday night that worked for everyone.
+        </p>
+        <a href="/about" class="btn btn-secondary">Read the story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Pricing summary -->
+  <section class="section price">
+    <div class="container">
+      <div class="price-card">
+        <div>
+          <p class="eyebrow">Free to join and respond</p>
+          <h2>Join a camp, watch everything, reply with up to five minutes of video. Free.</h2>
+          <p class="muted">
+            Starting your own Bondfires and running a hearth for your closest people is Plus. Leading
+            camps for a whole group is Pro.
+          </p>
+        </div>
+        <a href="/pricing" class="btn btn-secondary btn-lg">See all plans</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section class="section" id="faq">
+    <div class="container faq-grid">
+      <div>
+        <p class="eyebrow">Questions</p>
+        <h2>The ones people actually ask.</h2>
+        <a href="/faq" class="more">All questions →</a>
+      </div>
+      <div class="faq-list">
+        {
+          homeFaq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Final CTA -->
+  <section class="section final">
+    <div class="container final-card">
+      <div>
+        <h2>Light one tonight.</h2>
+        <p class="lede">Download Bondfires, join your camp, and record the first two minutes. The rest of the group will hear it in the morning.</p>
+        <StoreBadges campaign="home_footer" size="lg" />
+      </div>
+      <Qr url={`${SITE_URL}/get?c=home_qr`} label="Scan on your phone" size="150" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-8) 0 var(--space-7);
+    background:
+      radial-gradient(70% 80% at 75% 45%, var(--glow), transparent 65%),
+      radial-gradient(40% 40% at 20% 100%, var(--glow-soft), transparent 70%),
+      var(--obsidian);
+  }
+  @media (min-width: 900px) {
+    .hero {
+      padding: var(--space-9) 0 var(--space-8);
+    }
+  }
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+  }
+  .hero-copy h1 {
+    max-width: 12ch;
+    margin-bottom: var(--space-5);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+    margin: var(--space-6) 0 var(--space-3);
+  }
+  .watch {
+    color: var(--smoke);
+    font-weight: 500;
+  }
+  .fine {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  .hero-phone {
+    display: flex;
+    justify-content: center;
+  }
+  @media (min-width: 900px) {
+    .hero-phone {
+      justify-content: flex-end;
+      padding-right: var(--space-5);
+    }
+  }
+
+  /* Problem */
+  .problem {
+    border-top: 1px solid var(--iron);
+    border-bottom: 1px solid var(--iron);
+    background: var(--gunmetal);
+    padding: var(--space-7) 0;
+  }
+  .problem-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  @media (min-width: 800px) {
+    .problem-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-7);
+    }
+  }
+  .problem p {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: var(--smoke);
+    text-wrap: balance;
+    padding-left: var(--space-4);
+    border-left: 3px solid var(--copper);
+  }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 800px) {
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+  }
+  .step {
+    display: grid;
+    gap: var(--space-4);
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    align-content: start;
+  }
+  .step h3 {
+    margin-bottom: var(--space-2);
+  }
+  .step p {
+    margin: 0;
+  }
+  .num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--obsidian);
+    background: linear-gradient(135deg, var(--gold), var(--copper));
+  }
+
+  /* Thread demo */
+  .thread-demo {
+    background:
+      radial-gradient(50% 60% at 80% 50%, var(--glow-soft), transparent 70%),
+      var(--obsidian);
+    border-top: 1px solid var(--iron);
+  }
+  .demo-grid {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .demo-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .demo-points {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .demo-points li {
+    color: var(--ash);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--iron);
+  }
+  .demo-points strong {
+    color: var(--smoke);
+  }
+  .demo-thread {
+    display: grid;
+    gap: 10px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .spark,
+  .resp {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .spark {
+    border-color: var(--copper);
+    box-shadow: 0 0 40px -18px var(--copper);
+  }
+  .resp {
+    margin-left: var(--space-6);
+  }
+  .resp.you {
+    border-style: dashed;
+  }
+  .spark > div,
+  .resp > div {
+    display: grid;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+  .av {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .who {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .who small {
+    font-weight: 400;
+    color: var(--ash);
+    margin-left: 6px;
+  }
+  .ttl {
+    color: var(--smoke);
+    font-size: 1rem;
+  }
+  .dur {
+    font-size: 0.8rem;
+    color: var(--ash);
+    font-variant-numeric: tabular-nums;
+  }
+  .dur.rec {
+    color: var(--copper);
+    font-weight: 600;
+  }
+
+  /* Audiences */
+  .aud-card h3 {
+    margin-bottom: var(--space-2);
+  }
+  .aud-card p {
+    margin-bottom: var(--space-3);
+  }
+  .more {
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* Why */
+  .why {
+    border-top: 1px solid var(--iron);
+    border-bottom: 1px solid var(--iron);
+  }
+  .why h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  /* Founders */
+  .founders-grid {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  @media (min-width: 800px) {
+    .founders-grid {
+      grid-template-columns: 220px 1fr;
+      gap: var(--space-8);
+    }
+  }
+  .portraits {
+    display: flex;
+    justify-content: center;
+  }
+  .portrait {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--smoke);
+    background: radial-gradient(circle at 30% 30%, var(--charcoal), var(--gunmetal));
+    border: 3px solid var(--obsidian);
+    box-shadow: 0 0 0 1px var(--iron);
+  }
+  .portrait + .portrait {
+    margin-left: -28px;
+    background: radial-gradient(circle at 30% 30%, var(--ember), var(--gunmetal));
+  }
+  .founders h2 {
+    max-width: 22ch;
+  }
+
+  /* Price */
+  .price-card {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+    background: linear-gradient(135deg, var(--gunmetal), #1a1b1e);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+  }
+  @media (min-width: 900px) {
+    .price-card {
+      grid-template-columns: 1fr auto;
+      padding: var(--space-7);
+    }
+  }
+  .price-card h2 {
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    max-width: 26ch;
+  }
+  .price-card p {
+    margin: 0;
+  }
+
+  /* FAQ */
+  .faq-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 900px) {
+    .faq-grid {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+  .faq-list details {
+    border-bottom: 1px solid var(--iron);
+  }
+  .faq-list summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: 18px 0;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  .faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-list summary::after {
+    content: '+';
+    color: var(--copper);
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+  .faq-list details[open] summary::after {
+    content: '−';
+  }
+  .faq-list details p {
+    color: var(--ash);
+    margin: 0 0 18px;
+    max-width: 60ch;
+  }
+
+  /* Final */
+  .final {
+    background:
+      radial-gradient(60% 70% at 30% 100%, var(--glow), transparent 70%),
+      var(--obsidian);
+    border-top: 1px solid var(--iron);
+  }
+  .final-card {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .final-card {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  .final h2 {
+    font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+  }
+  .final .lede {
+    margin-bottom: var(--space-5);
+  }
+</style>
