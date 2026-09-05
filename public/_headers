@@ -18,8 +18,10 @@
 # fingerprints change.
 /.well-known/apple-app-site-association
   Content-Type: application/json
+  X-Content-Type-Options: nosniff
   Cache-Control: public, max-age=300, must-revalidate
 
 /.well-known/assetlinks.json
   Content-Type: application/json
+  X-Content-Type-Options: nosniff
   Cache-Control: public, max-age=300, must-revalidate

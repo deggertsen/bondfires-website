@@ -11,6 +11,7 @@ npm run dev        # Astro dev server with hot reload
 npm run build      # static output → dist/
 npm run preview    # serves dist/ through wrangler, including functions/ and _redirects
 npm run og         # regenerate public/images/og-image.png (commit the result)
+npm run validate   # check the app association files before touching .well-known/
 ```
 
 ## Structure
@@ -23,17 +24,18 @@ src/
   components/       Nav, Footer, Logo, StoreBadges, Qr, PhoneMock, EmberCanvas
   lib/site.ts       store URLs, emails, nav, the three-step story
   lib/faq.ts        FAQ content (also drives FAQ structured data)
-  legal/*.html      legal page bodies, ported verbatim from the previous site
+  legal/*.html      legal page bodies (privacy, terms, guidelines, child safety, delete account)
   styles/global.css design tokens (mirror of docs/Brand Kit.js in the app repo)
 public/
   _headers, _redirects, robots.txt, .well-known/, images/, favicon
 functions/get.js    Pages Function: /get → App Store or Google Play by user agent
 scripts/generate-og.mjs
+scripts/validate-app-links.mjs
 ```
 
 ## Deploy (Cloudflare Pages)
 
-Every push to `main` deploys. The Pages project needs a build step now:
+Every push to `main` deploys. The Pages project needs a build step:
 
 | Setting | Value |
 |---|---|
@@ -41,6 +43,8 @@ Every push to `main` deploys. The Pages project needs a build step now:
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 | Node version | `NODE_VERSION=22` (environment variable) |
+
+Custom domains: `bondfires.org`, `www.bondfires.org`, `bondfires.app`.
 
 Optional environment variables:
 
@@ -57,9 +61,25 @@ in App Store Connect / Play Console even without PostHog.
 ### Domains
 
 `bondfires.org` is canonical; every page sets `<link rel="canonical">` to it.
-`bondfires.app` should redirect to it at the edge with a Cloudflare **Redirect Rule**
-(`https://bondfires.app/*` → `https://bondfires.org/${1}`, 301) **except** requests to
-`/.well-known/*`, which Apple and Google must be able to fetch directly on both hosts.
+`bondfires.app` is an alias and an associated domain for the app. If you add an
+edge redirect from `.app` to `.org`, exclude `/.well-known/*`, which Apple and Google
+must be able to fetch directly on both hosts.
+
+## Mobile app association files
+
+Before changing anything under `public/.well-known/`, `public/_redirects`, or
+`public/_headers`, run:
+
+```bash
+npm run validate
+```
+
+The same check runs in CI (`.github/workflows/app-links.yml`) on every pull request.
+
+`assetlinks.json` must contain the public **Google Play App Signing** SHA-256 from
+**Google Play Console → Protected with Play → Play app signing**. Do not use the
+EAS/local upload certificate; Google re-signs Play-distributed builds, and the
+validator rejects the upload fingerprint.
 
 ## URLs that must never break
 
@@ -68,16 +88,10 @@ These are linked from the app stores, the app, and transactional email:
 - `/privacy`, `/terms`, `/community-guidelines`, `/child-safety`, `/delete-account`
   (the old `/*.html` forms are redirected by Pages automatically because the build
   emits `name.html` files — see `build.format: 'file'` in `astro.config.mjs`)
-- `/invite`, `/invite/:code`, `/invite/camp/:code` (rewrites in `public/_redirects`)
+- `/invite`, `/invite/:code`, `/invite/camp/:code`, `/invite/family/:code`,
+  `/personal-bondfire/:bondfireId/:code` (rewrites in `public/_redirects`)
 - `/.well-known/apple-app-site-association` and `/.well-known/assetlinks.json`
 - `/images/connection-interrupted.jpg` (Mux reconnect slate, referenced from `convex/videos.ts`)
-
-### Android App Links
-
-`public/.well-known/assetlinks.json` contains the SHA-256 of the **upload** signing
-certificate (read from the release `.aab`). If Play App Signing is enabled for the
-app, add the **App signing key certificate** fingerprint from
-Play Console → Setup → App signing as a second entry.
 
 ## Content that still needs real assets
 

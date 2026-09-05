@@ -19,11 +19,11 @@ import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/site'
   <section class="wrap">
     <div class="card">
       <div class="mark"><Logo size={44} wordmark={false} /></div>
-      <h1>You’re invited to Bondfires.</h1>
-      <p class="muted">Install the app to join your camp.</p>
+      <h1 id="invite-title">You’re invited to Bondfires.</h1>
+      <p class="muted" id="invite-description">Install the app to join your camp.</p>
 
       <div class="code" id="invite-code-box">
-        <div class="code-label">Invite code</div>
+        <div class="code-label" id="invite-code-label">Invite code</div>
         <div class="code-value" id="invite-code">…</div>
       </div>
       <p id="invite-note" class="note muted">We’ll remember your invite code when you install the app.</p>
@@ -48,7 +48,12 @@ import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/site'
       const parts = window.location.pathname.split('/').filter(Boolean)
       if (parts[0] !== 'invite') return null
       if (parts[1] === 'camp') return parts[2] || null
+      if (parts[1] === 'family') return parts[2] || null
       return parts[1] || null
+    }
+    function isFamilyInvite() {
+      const parts = window.location.pathname.split('/').filter(Boolean)
+      return parts[0] === 'invite' && parts[1] === 'family'
     }
     function getDisplayCode(code) {
       try {
@@ -72,6 +77,7 @@ import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/site'
     }
 
     const code = getInviteCode()
+    const familyInvite = isFamilyInvite()
     const isAndroid = /Android/i.test(navigator.userAgent)
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
 
@@ -91,16 +97,24 @@ import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/site'
       if (openAppLink) openAppLink.hidden = true
     } else {
       const encoded = encodeURIComponent(code)
-      const appSchemeUrl = 'bondfires://invite/' + encoded
+      const invitePath = familyInvite ? 'invite/family/' : 'invite/'
+      const appSchemeUrl = 'bondfires://' + invitePath + encoded
       const playStoreUrl = getPlayStoreUrl(code)
       const intentUrl =
-        'intent://bondfires.app/invite/' +
+        'intent://bondfires.app/' +
+        invitePath +
         encoded +
         '#Intent;scheme=https;package=org.bondfires;S.browser_fallback_url=' +
         encodeURIComponent(playStoreUrl) +
         ';end;'
 
       document.getElementById('invite-code').textContent = getDisplayCode(code)
+      if (familyInvite) {
+        document.getElementById('invite-title').textContent = 'Private family Hearth invitation'
+        document.getElementById('invite-description').textContent =
+          'Open Bondfires to review and explicitly accept or decline. Accept only if you know and trust the sender offline.'
+        document.getElementById('invite-code-label').textContent = 'One-time invitation'
+      }
       if (openAppLink) openAppLink.href = isAndroid ? intentUrl : appSchemeUrl
       if (appStoreLink) {
         appStoreLink.href = APP_STORE_URL
