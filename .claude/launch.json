@@ -4,7 +4,7 @@
     {
       "name": "website",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["wrangler", "pages", "dev", "dist", "--port", "8788"],
+      "runtimeArgs": ["wrangler", "dev", "--port", "8788"],
       "port": 8788,
       "autoPort": false
     }

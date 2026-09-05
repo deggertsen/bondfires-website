@@ -16,15 +16,17 @@
 
 # App association files must update quickly when link targets or signing
 # fingerprints change.
-# ("!" detaches the header inherited from /* so nosniff is not emitted twice.)
+# ("!" detaches headers inherited from /* so they are not emitted twice.)
 /.well-known/apple-app-site-association
   ! X-Content-Type-Options
+  ! Cache-Control
   Content-Type: application/json
   X-Content-Type-Options: nosniff
   Cache-Control: public, max-age=300, must-revalidate
 
 /.well-known/assetlinks.json
   ! X-Content-Type-Options
+  ! Cache-Control
   Content-Type: application/json
   X-Content-Type-Options: nosniff
   Cache-Control: public, max-age=300, must-revalidate

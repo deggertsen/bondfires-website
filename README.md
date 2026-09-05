@@ -1,6 +1,6 @@
 # Bondfires Website
 
-Marketing site for [Bondfires](https://bondfires.org), built with [Astro](https://astro.build) and hosted on Cloudflare Pages.
+Marketing site for [Bondfires](https://bondfires.org), built with [Astro](https://astro.build) and deployed as a Cloudflare Worker with static assets.
 The mobile app lives in the separate [bondfires](https://github.com/deggertsen/bondfires) monorepo.
 
 ## Local development
@@ -9,7 +9,7 @@ The mobile app lives in the separate [bondfires](https://github.com/deggertsen/b
 npm install
 npm run dev        # Astro dev server with hot reload
 npm run build      # static output → dist/
-npm run preview    # serves dist/ through wrangler, including functions/ and _redirects
+npm run preview    # builds, then serves dist/ through the Worker (wrangler dev)
 npm run og         # regenerate public/images/og-image.png (commit the result)
 npm run validate   # check the app association files before touching .well-known/
 ```
@@ -28,21 +28,24 @@ src/
   styles/global.css design tokens (mirror of docs/Brand Kit.js in the app repo)
 public/
   _headers, _redirects, robots.txt, .well-known/, images/, favicon
-functions/get.js    Pages Function: /get → App Store or Google Play by user agent
+worker/index.js     Worker: /get → App Store or Google Play by user agent; else assets
 scripts/generate-og.mjs
 scripts/validate-app-links.mjs
 ```
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare Workers Builds)
 
-Every push to `main` deploys. The Pages project needs a build step:
+Production is a Git-connected Worker (`bondfires-website`) using Workers Builds.
+Every push to `main` installs dependencies, runs `npm run build` (from
+`wrangler.jsonc` → `build.command`), and deploys `dist/` as static assets behind
+the small Worker in `worker/index.js`. Pull requests get a preview build check.
 
-| Setting | Value |
-|---|---|
-| Framework preset | Astro |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node version | `NODE_VERSION=22` (environment variable) |
+- `worker/index.js` only handles `/get` (device-aware store redirect). Everything
+  else is served from the asset store, with `public/_headers` and
+  `public/_redirects` applied.
+- No dashboard build settings are required beyond the Git connection. If the
+  dashboard has a build command set, it should be empty or `npm run build`.
+- Manual deploy from a machine with wrangler login: `npx wrangler deploy`.
 
 Custom domains: `bondfires.org`, `www.bondfires.org`, `bondfires.app`.
 
@@ -86,8 +89,9 @@ validator rejects the upload fingerprint.
 These are linked from the app stores, the app, and transactional email:
 
 - `/privacy`, `/terms`, `/community-guidelines`, `/child-safety`, `/delete-account`
-  (the old `/*.html` forms are redirected by Pages automatically because the build
-  emits `name.html` files — see `build.format: 'file'` in `astro.config.mjs`)
+  (the old `/*.html` forms redirect automatically because the build emits
+  `name.html` files and assets use `html_handling: auto-trailing-slash`; see
+  `build.format: 'file'` in `astro.config.mjs`)
 - `/invite`, `/invite/:code`, `/invite/camp/:code`, `/invite/family/:code`,
   `/personal-bondfire/:bondfireId/:code` (rewrites in `public/_redirects`)
 - `/.well-known/apple-app-site-association` and `/.well-known/assetlinks.json`

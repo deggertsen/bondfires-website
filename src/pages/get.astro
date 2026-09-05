@@ -1,9 +1,10 @@
 ---
 /**
  * /get — smart store link.
- * On Cloudflare Pages the Function in functions/get.js handles this route at
- * the edge. This static page is the fallback (local preview, other hosts): it
- * redirects client-side and shows both store links if scripts are off.
+ * In production the Worker in worker/index.js answers this route at the edge
+ * (see wrangler.jsonc → run_worker_first). This static page is the fallback for
+ * `astro dev`/other hosts: it redirects client-side and shows both store links
+ * if scripts are off.
  */
 import Base from '../layouts/Base.astro'
 import StoreBadges from '../components/StoreBadges.astro'

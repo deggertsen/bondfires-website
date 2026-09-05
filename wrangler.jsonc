@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Production deploy: Cloudflare Workers Builds, connected to this GitHub repo.
+  // On every push to `main` it installs dependencies, runs `build.command`, and
+  // deploys `assets.directory` behind the small Worker in worker/index.js.
+  "name": "bondfires-website",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-06-09",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "build": {
+    "command": "npm run build"
+  },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash",
+    // Only these paths hit the Worker; everything else is served straight from
+    // the asset store (with public/_headers and public/_redirects applied).
+    "run_worker_first": ["/get", "/get/*"]
+  }
+}
