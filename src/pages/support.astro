@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro'
+import { SUPPORT_EMAIL, PRIVACY_EMAIL, SAFETY_EMAIL } from '../lib/site'
+---
+
+<Base
+  title="Support"
+  description="Get help with Bondfires. Email the founders directly, report a safety concern, manage your data, or delete your account."
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Support</p>
+      <h1>Talk to a person.</h1>
+      <p class="lede">
+        Bondfires is run by the two people who built it. Every message below lands in an inbox one of
+        us reads.
+      </p>
+
+      <div class="grid grid-2 cards">
+        <a class="card link" href={`mailto:${SUPPORT_EMAIL}`}>
+          <h3>Something isn’t working</h3>
+          <p class="muted">Bugs, billing, a camp you can’t get into, a video that won’t upload.</p>
+          <span class="addr">{SUPPORT_EMAIL}</span>
+        </a>
+        <a class="card link" href={`mailto:${SAFETY_EMAIL}`}>
+          <h3>Report a safety concern</h3>
+          <p class="muted">
+            Use the report button on any video first, which reaches us immediately. For anything involving
+            a child, email us directly as well. Reviewed same day.
+          </p>
+          <span class="addr">{SAFETY_EMAIL}</span>
+        </a>
+        <a class="card link" href={`mailto:${PRIVACY_EMAIL}`}>
+          <h3>Your data</h3>
+          <p class="muted">Requests to access, export, or correct your data. See the <span class="u">privacy policy</span> for what we hold.</p>
+          <span class="addr">{PRIVACY_EMAIL}</span>
+        </a>
+        <a class="card link" href="/delete-account">
+          <h3>Delete your account</h3>
+          <p class="muted">Step-by-step instructions, and what happens to your videos and data afterwards.</p>
+          <span class="addr">bondfires.org/delete-account</span>
+        </a>
+      </div>
+
+      <div class="prose">
+        <h2>Before you email</h2>
+        <ul>
+          <li>Most “how does this work” questions are answered in the <a href="/faq">FAQ</a>.</li>
+          <li>Uploads that seem stuck usually finish when the app is reopened on Wi-Fi. Recordings are saved locally until they do.</li>
+          <li>Subscription changes and refunds go through the App Store or Google Play, not through us. We can help you find the right screen.</li>
+        </ul>
+        <h2>Response times</h2>
+        <p>
+          Child-safety reports are reviewed the same day. Other reports within 72 hours. Everything else,
+          usually within two business days. We’re small; if something is urgent, say so in the subject line.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 860px;
+  }
+  .cards {
+    margin: var(--space-7) 0;
+  }
+  .link {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    color: var(--smoke);
+    transition: border-color 0.15s ease;
+  }
+  .link:hover {
+    text-decoration: none;
+    border-color: var(--copper);
+  }
+  .link h3 {
+    margin: 0;
+  }
+  .link p {
+    margin: 0;
+  }
+  .u {
+    text-decoration: underline;
+  }
+  .addr {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: var(--space-2);
+  }
+</style>

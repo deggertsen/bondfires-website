@@ -1,0 +1,145 @@
+---
+import Base from '../layouts/Base.astro'
+import StoreBadges from '../components/StoreBadges.astro'
+---
+
+<Base
+  title="About"
+  description="Bondfires was built by two engineers, David and Jake, whose friendship kept dying in the group chat. Here’s why they built a video app for small groups, and what they believe."
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">About Bondfires</p>
+      <h1>We built the thing we needed.</h1>
+      <p class="lede">
+        Bondfires exists because the people we care about most were the people we talked to least.
+        Not for lack of wanting to. For lack of a Tuesday night that worked for everyone.
+      </p>
+    </div>
+  </section>
+
+  <section class="section founders">
+    <div class="container narrow">
+      <div class="people">
+        <!-- TODO(David, Jake): replace initials with real portraits (square, ≥800px). -->
+        <figure>
+          <span class="portrait">D</span>
+          <figcaption><strong>David Eggertsen</strong><span class="muted">Co-founder</span></figcaption>
+        </figure>
+        <figure>
+          <span class="portrait alt">J</span>
+          <figcaption><strong>Jake</strong><span class="muted">Co-founder</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="prose">
+        <h2>The story</h2>
+        <p>
+          We’re two engineers who have been friends for a long time. Somewhere along the way, careers
+          and kids and different cities turned the friendship into a group chat. Hundreds of messages a
+          month, and none of them the conversation either of us actually wanted to have.
+        </p>
+        <p>
+          We tried scheduling calls. Calendar tetris, every time. We tried voice notes. Better, but
+          they vanish into the same scroll as everything else. What we wanted was simple: a way to say
+          the real thing, with our actual faces, and have the other person answer the same way when they
+          got a minute.
+        </p>
+        <p>
+          So we built it, first for our own men’s group. It turns out a lot of groups have the same
+          problem. The monthly meeting is the only time anyone says anything that matters, and it’s
+          the first thing to get cancelled.
+        </p>
+
+        <h2>What we believe</h2>
+        <h3>Depth over volume</h3>
+        <p>
+          Most of the internet is optimised for how much you post. Bondfires is optimised for whether
+          the four people who matter actually heard you. Camps are small on purpose. Threads stay
+          threads. There is no public feed to perform for.
+        </p>
+        <h3>Your time is yours</h3>
+        <p>
+          Nobody should have to be free at eight o’clock to be a good friend. Everything in Bondfires
+          works on your schedule: record when you can, watch when you can, reply when you can.
+        </p>
+        <h3>Your conversations are yours</h3>
+        <p>
+          Videos are visible only to the camp they were posted in. We don’t sell data, we don’t run
+          ads, and we don’t use your conversations to train anything or target anyone. We make money
+          the plain way: some members pay for <a href="/pricing">Plus, Premium, or Pro</a>.
+        </p>
+        <h3>Accessible by default</h3>
+        <p>
+          Joining a camp, watching, and replying are free and will stay free. Real community
+          shouldn’t require a retreat weekend and a four-figure invoice.
+        </p>
+
+        <h2>Where we are</h2>
+        <p>
+          Bondfires is live on iOS and Android and is run by the two of us. The first camps are our
+          own groups and the groups of people who asked to try it. If you lead a group and want to be
+          one of them, <a href="/for/groups">start here</a>. If you just want to say hello,
+          <a href="mailto:support@bondfires.org">support@bondfires.org</a> reaches both of us.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta">
+    <div class="container narrow">
+      <h2>Come sit by the fire.</h2>
+      <StoreBadges campaign="about" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 780px;
+  }
+  h1 {
+    max-width: 14ch;
+  }
+  .founders {
+    padding-top: 0;
+  }
+  .people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-bottom: var(--space-7);
+  }
+  figure {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  figcaption {
+    display: grid;
+    gap: 2px;
+  }
+  .portrait {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.8rem;
+    background: radial-gradient(circle at 30% 30%, var(--charcoal), var(--gunmetal));
+    box-shadow: 0 0 0 1px var(--iron);
+  }
+  .portrait.alt {
+    background: radial-gradient(circle at 30% 30%, var(--ember), var(--gunmetal));
+  }
+  .cta {
+    border-top: 1px solid var(--iron);
+  }
+  .cta h2 {
+    margin-bottom: var(--space-5);
+  }
+</style>

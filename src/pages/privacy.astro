@@ -1,0 +1,12 @@
+---
+import Legal from '../layouts/Legal.astro'
+import content from '../legal/privacy.html?raw'
+---
+
+<Legal
+  title="Privacy Policy"
+  subtitle="Last updated: September 2026"
+  description="How Bondfires collects, uses, protects, and shares your information. We don’t sell your data or use your conversations for advertising."
+>
+  <Fragment set:html={content} />
+</Legal>

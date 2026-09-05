@@ -1,0 +1,48 @@
+---
+/**
+ * /get — smart store link.
+ * In production the Worker in worker/index.js answers this route at the edge
+ * (see wrangler.jsonc → run_worker_first). This static page is the fallback for
+ * `astro dev`/other hosts: it redirects client-side and shows both store links
+ * if scripts are off.
+ */
+import Base from '../layouts/Base.astro'
+import StoreBadges from '../components/StoreBadges.astro'
+import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/site'
+---
+
+<Base title="Get the app" description="Sending you to the right app store for your device." minimal noindex>
+  <section class="wrap">
+    <div class="card">
+      <h1>Taking you to the store…</h1>
+      <p class="muted">If nothing happens, pick your platform.</p>
+      <StoreBadges campaign="get_fallback" align="center" />
+    </div>
+  </section>
+  <script is:inline define:vars={{ APP_STORE_URL, PLAY_STORE_URL }}>
+    const ua = navigator.userAgent
+    const c = new URLSearchParams(location.search).get('c') || 'get'
+    const utm = `utm_source=website&utm_medium=referral&utm_campaign=${encodeURIComponent(c)}`
+    if (/android/i.test(ua)) location.replace(`${PLAY_STORE_URL}&${utm}`)
+    else if (/iphone|ipad|ipod/i.test(ua)) location.replace(`${APP_STORE_URL}?${utm}`)
+    else location.replace('/download')
+  </script>
+</Base>
+
+<style>
+  .wrap {
+    min-height: 80vh;
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+  }
+  .card {
+    text-align: center;
+    display: grid;
+    gap: var(--space-4);
+    justify-items: center;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+</style>

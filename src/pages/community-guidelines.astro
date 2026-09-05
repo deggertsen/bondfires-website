@@ -1,0 +1,12 @@
+---
+import Legal from '../layouts/Legal.astro'
+import content from '../legal/community-guidelines.html?raw'
+---
+
+<Legal
+  title="Community Guidelines"
+  subtitle="Our expectations for respectful, authentic engagement in the Bondfires community"
+  description="What we expect from everyone in a Bondfires camp, what we don’t allow, and how to report a problem."
+>
+  <Fragment set:html={content} />
+</Legal>

@@ -1,0 +1,98 @@
+---
+import { APP_STORE_URL, PLAY_STORE_URL, storeLink } from '../lib/site'
+interface Props {
+  campaign: string
+  size?: 'md' | 'lg'
+  align?: 'start' | 'center'
+}
+const { campaign, size = 'md', align = 'start' } = Astro.props
+const ios = storeLink(APP_STORE_URL, campaign)
+const android = storeLink(PLAY_STORE_URL, campaign)
+---
+
+<div class={`badges ${size} ${align}`}>
+  <a
+    class="badge"
+    href={ios}
+    data-track="store_click"
+    data-platform="ios"
+    data-campaign={campaign}
+    rel="noopener"
+  >
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path
+        d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.56-1.701"
+      />
+    </svg>
+    <span><small>Download on the</small>App Store</span>
+  </a>
+  <a
+    class="badge"
+    href={android}
+    data-track="store_click"
+    data-platform="android"
+    data-campaign={campaign}
+    rel="noopener"
+  >
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path
+        d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"
+      />
+    </svg>
+    <span><small>Get it on</small>Google Play</span>
+  </a>
+</div>
+
+<style>
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .badges.center {
+    justify-content: center;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #000;
+    color: #fff;
+    border: 1px solid #3a3d44;
+    border-radius: 12px;
+    padding: 9px 16px 9px 14px;
+    min-width: 168px;
+    line-height: 1.05;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .badge:hover {
+    text-decoration: none;
+    border-color: var(--copper);
+    transform: translateY(-1px);
+  }
+  .badge svg {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+  .badge small {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #cfd2d8;
+    margin-bottom: 2px;
+  }
+  .lg .badge {
+    padding: 11px 20px 11px 16px;
+    font-size: 1.15rem;
+    min-width: 190px;
+  }
+  .lg .badge svg {
+    width: 30px;
+    height: 30px;
+  }
+</style>

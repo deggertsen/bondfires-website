@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /invite
+Disallow: /get
+
+Sitemap: https://bondfires.org/sitemap-index.xml

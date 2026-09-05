@@ -1,0 +1,213 @@
+---
+import Base from '../layouts/Base.astro'
+import StoreBadges from '../components/StoreBadges.astro'
+
+/** Mirrors TIER_DEFINITIONS in the app repo
+ *  (packages/app/src/store/subscription.store.ts) and the tier model in
+ *  convex/entitlements.ts. Prices are set in App Store Connect / Play Console
+ *  and shown in the app, so this page describes capabilities, not numbers. */
+const tiers = [
+  {
+    name: 'Free',
+    tag: 'For everyone in the group',
+    blurb: 'Join, watch, and respond. Everything you need to be part of a camp.',
+    features: [
+      'Join public camps and camps you’re invited to',
+      'Watch every Bondfire in your camps',
+      'Respond with videos up to 5 minutes',
+      'Bookmark threads to come back to',
+      'The Ember Rail and notifications',
+    ],
+    cta: 'Get the app',
+    href: '/download',
+  },
+  {
+    name: 'Plus',
+    tag: 'For people who start conversations',
+    blurb: 'Spark your own Bondfires in any camp, and run a hearth for the people closest to you.',
+    features: [
+      'Everything in Free',
+      'Spark Bondfires in any camp you join',
+      'Your own hearth: one private camp for friends and family',
+      '15-minute recordings',
+      '1 month of video storage in your hearth',
+    ],
+    featured: true,
+  },
+  {
+    name: 'Premium',
+    tag: 'For hearths that keep everything',
+    blurb: 'Keep every hearth video, forever, and talk for longer.',
+    features: ['Everything in Plus', 'Unlimited video storage in your hearth', '30-minute recordings'],
+  },
+  {
+    name: 'Pro',
+    tag: 'For group leaders',
+    blurb: 'Create and run camps for your whole group, with no limit on video length.',
+    features: [
+      'Everything in Premium',
+      'Create and manage public camps',
+      'Create private, invite-only camps',
+      '3 kindling per month to keep camps lit',
+      'Extra kindling packs when you need more camps',
+      'Unlimited video length',
+    ],
+    cta: 'For group leaders',
+    href: '/for/groups',
+  },
+]
+---
+
+<Base
+  title="Pricing"
+  description="Bondfires is free to join, watch, and respond. Plus lets you spark your own Bondfires and run a hearth. Pro is for leaders who run camps for their group. Prices are shown in the app."
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">Pricing</p>
+        <h1>Free to be part of the group. Paid to lead it.</h1>
+        <p>
+          Everyone can join, watch, and reply for free. You pay when you want to start the
+          conversation, keep a hearth, or run camps for your whole group. Prices are shown in the app, in your local currency.
+        </p>
+      </div>
+
+      <div class="tiers">
+        {
+          tiers.map((t) => (
+            <article class={`tier ${t.featured ? 'featured' : ''}`}>
+              <header>
+                <h2>{t.name}</h2>
+                <p class="tag">{t.tag}</p>
+              </header>
+              <p class="blurb muted">{t.blurb}</p>
+              <ul>
+                {t.features.map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+              {t.cta && (
+                <a href={t.href} class={`btn ${t.featured ? 'btn-primary' : 'btn-secondary'}`}>
+                  {t.cta}
+                </a>
+              )}
+              {!t.cta && <span class="inapp muted">Upgrade in the app</span>}
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="notes prose">
+        <h3>What is kindling?</h3>
+        <p>
+          Kindling is how Pro members keep camps running. Each active camp you created uses one
+          kindling per month; Pro includes three, and you can buy extra packs if your group needs more
+          camps. If a camp runs out of kindling it goes dormant, not deleted, until it’s re-lit.
+        </p>
+        <h3>Do the people in my group need to pay?</h3>
+        <p>
+          No. One leader on Pro can run a camp for a whole group of Free members. Members only upgrade
+          if they personally want to spark Bondfires or keep a hearth of their own.
+        </p>
+        <h3>Billing</h3>
+        <p>
+          Subscriptions are billed through the App Store or Google Play and can be cancelled from your
+          store account at any time. Monthly and annual options are available for every paid tier.
+        </p>
+      </div>
+
+      <div class="cta">
+        <StoreBadges campaign="pricing" align="center" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section-head h1 {
+    font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+  }
+  .tiers {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+  @media (min-width: 720px) {
+    .tiers {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1080px) {
+    .tiers {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .tier {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+  }
+  .tier.featured {
+    border-color: var(--copper);
+    box-shadow: 0 0 60px -30px var(--copper);
+  }
+  .tier h2 {
+    font-size: 1.6rem;
+    margin: 0 0 4px;
+  }
+  .tag {
+    margin: 0;
+    color: var(--copper);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .blurb {
+    margin: 0;
+    min-height: 3.2em;
+  }
+  .tier ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    flex: 1;
+  }
+  .tier li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 0.97rem;
+    color: var(--smoke);
+  }
+  .tier li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--gold), var(--copper));
+  }
+  .inapp {
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 14px 0;
+    border: 1px dashed var(--iron);
+    border-radius: var(--radius-md);
+  }
+  .notes {
+    margin: 0 auto;
+  }
+  .notes h3 {
+    margin-top: var(--space-6);
+  }
+  .cta {
+    margin-top: var(--space-8);
+  }
+</style>

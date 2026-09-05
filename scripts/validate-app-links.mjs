@@ -15,7 +15,7 @@ const fingerprintPattern = /^(?:[0-9A-F]{2}:){31}[0-9A-F]{2}$/
 const uploadFingerprint =
   'B9:61:12:91:E7:3A:13:96:A2:92:0A:03:BB:05:C4:61:B3:29:85:8D:3C:AE:C4:D5:7D:CF:BC:FA:44:CD:99:74'
 
-const assetlinks = json('.well-known/assetlinks.json')
+const assetlinks = json('public/.well-known/assetlinks.json')
 const statement = Array.isArray(assetlinks)
   ? assetlinks.find(
       (entry) =>
@@ -36,7 +36,7 @@ if (!Array.isArray(fingerprints) || fingerprints.length !== 1) {
   if (fingerprint === uploadFingerprint) errors.push('Upload certificate cannot authorize Play builds')
 }
 
-const aasa = json('.well-known/apple-app-site-association')
+const aasa = json('public/.well-known/apple-app-site-association')
 const details = Array.isArray(aasa?.applinks?.details) ? aasa.applinks.details : []
 const applePaths = new Set(
   details.find((entry) => entry.appID === 'A9BJ2VA78M.org.bondfires')?.paths ?? [],
@@ -45,7 +45,7 @@ for (const path of ['/invite/*', '/invite/camp/*', '/invite/family/*', '/persona
   if (!applePaths.has(path)) errors.push(`AASA is missing ${path}`)
 }
 
-const redirects = new Set(read('_redirects').split(/\r?\n/))
+const redirects = new Set(read('public/_redirects').split(/\r?\n/))
 for (const rule of [
   '/invite/:code /invite 200',
   '/invite/camp/:code /invite 200',
@@ -55,7 +55,7 @@ for (const rule of [
   if (!redirects.has(rule)) errors.push(`_redirects is missing: ${rule}`)
 }
 
-const headers = read('_headers')
+const headers = read('public/_headers')
 for (const path of ['/.well-known/assetlinks.json', '/.well-known/apple-app-site-association']) {
   const start = headers.indexOf(path)
   const next = headers.indexOf('\n/', start + path.length)

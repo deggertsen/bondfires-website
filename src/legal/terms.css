@@ -1,0 +1,30 @@
+
+    .legal-content {
+      max-width: 900px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    .legal-content h2 {
+      margin-top: var(--spacing-2xl);
+      margin-bottom: var(--spacing-md);
+    }
+    .legal-content h3 {
+      margin-top: var(--spacing-xl);
+      margin-bottom: var(--spacing-sm);
+    }
+    .legal-content ul, .legal-content ol {
+      margin-left: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+    .legal-content li {
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-text-muted);
+    }
+    .legal-content p {
+      margin-bottom: var(--spacing-md);
+      color: var(--color-text-muted);
+    }
+    .legal-content strong {
+      color: var(--color-text);
+    }
+  

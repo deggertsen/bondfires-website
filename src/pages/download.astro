@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro'
+import StoreBadges from '../components/StoreBadges.astro'
+import Qr from '../components/Qr.astro'
+import PhoneMock from '../components/PhoneMock.astro'
+import { SITE_URL, IOS_MIN, ANDROID_MIN, STEPS } from '../lib/site'
+---
+
+<Base
+  title="Download"
+  description="Get Bondfires for iPhone and Android. Free to join, watch, and respond. Scan the QR code on your phone or tap through to the App Store or Google Play."
+>
+  <section class="section hero">
+    <div class="container grid-hero">
+      <div>
+        <p class="eyebrow">Download</p>
+        <h1>Get Bondfires.</h1>
+        <p class="lede">Free on iPhone and Android. Join your camp, watch, and reply in the first five minutes.</p>
+        <StoreBadges campaign="download" size="lg" />
+        <p class="req muted">{IOS_MIN} · {ANDROID_MIN}</p>
+        <div class="qr">
+          <Qr url={`${SITE_URL}/get?c=download_qr`} label="On a computer? Scan with your phone." size="170" />
+        </div>
+      </div>
+      <div class="phone">
+        <PhoneMock />
+      </div>
+    </div>
+  </section>
+
+  <section class="section next">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Once you’re in</p>
+        <h2>The first ten minutes.</h2>
+      </div>
+      <ol class="steps">
+        {
+          STEPS.map((s, i) => (
+            <li>
+              <span class="num">{i + 1}</span>
+              <div>
+                <h3>{s.title}</h3>
+                <p class="muted">{s.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="muted invite-note">
+        Got an invite link from someone? Open it on your phone after installing and you’ll land straight
+        in their camp.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    background:
+      radial-gradient(60% 70% at 80% 40%, var(--glow), transparent 65%),
+      var(--obsidian);
+  }
+  .grid-hero {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .grid-hero {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+  h1 {
+    margin-bottom: var(--space-4);
+  }
+  .req {
+    font-size: 0.9rem;
+    margin: var(--space-4) 0 var(--space-6);
+  }
+  .qr {
+    display: inline-block;
+    padding: var(--space-5);
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-lg);
+  }
+  .phone {
+    display: flex;
+    justify-content: center;
+  }
+  .next {
+    border-top: 1px solid var(--iron);
+  }
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 800px) {
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .steps li {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+  }
+  .steps h3 {
+    margin-bottom: var(--space-2);
+  }
+  .steps p {
+    margin: 0;
+  }
+  .num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--obsidian);
+    background: linear-gradient(135deg, var(--gold), var(--copper));
+  }
+  .invite-note {
+    margin-top: var(--space-6);
+  }
+</style>

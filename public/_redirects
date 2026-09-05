@@ -1,0 +1,9 @@
+# Invite deep-link landing (handled client-side by /invite).
+/invite/family/:code /invite 200
+/invite/camp/:code /invite 200
+/invite/:code /invite 200
+/personal-bondfire/:bondfireId/:code /invite 200
+
+# Legacy page that folded into the homepage.
+/how-it-works /#how-it-works 301
+/how-it-works.html /#how-it-works 301

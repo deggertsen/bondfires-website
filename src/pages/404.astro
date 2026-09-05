@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro'
+---
+
+<Base title="Page not found" description="That page doesn’t exist or has moved." noindex>
+  <section class="section wrap">
+    <div class="container center">
+      <p class="big" aria-hidden="true">404</p>
+      <h1>The fire’s not here.</h1>
+      <p class="lede">That page doesn’t exist or has moved. Let’s get you back to camp.</p>
+      <div class="actions">
+        <a href="/" class="btn btn-primary">Go home</a>
+        <a href="/download" class="btn btn-secondary">Get the app</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .wrap {
+    min-height: 70vh;
+    display: grid;
+    align-items: center;
+  }
+  .center {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+  .big {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(5rem, 14vw, 9rem);
+    line-height: 1;
+    margin: 0 0 var(--space-3);
+    background: linear-gradient(135deg, var(--gold), var(--copper), var(--ember));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--space-4);
+  }
+</style>
