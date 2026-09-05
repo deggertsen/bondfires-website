@@ -11,9 +11,9 @@ const homeFaq = FAQ.filter((f) => f.home)
 
 const audiences = [
   {
-    title: 'Men’s groups',
-    body: 'The Thursday group that meets once a month, if everyone can make it. Keep the conversation going the other 29 days.',
-    href: '/for/mens-groups',
+    title: 'The group that meets monthly',
+    body: 'Book club, small group, running crew, the Thursday breakfast. It meets once a month, if everyone can make it. Keep it going the other 29 days.',
+    href: '/for/groups',
   },
   {
     title: 'Friends in different cities',
@@ -21,7 +21,7 @@ const audiences = [
   },
   {
     title: 'Family, in a hearth',
-    body: 'Your own private space for siblings, parents, kids who moved out. Two minutes of Dad’s face on a Tuesday.',
+    body: 'Your own private space for siblings, parents, kids who moved out. Dad’s face on a Tuesday, whenever he gets to it.',
   },
   {
     title: 'Faith, recovery, and mastermind groups',
@@ -54,7 +54,7 @@ const appLd = {
 
 <Base
   title="Bondfires · Your group, on your own time"
-  description="Bondfires is where your group keeps talking between meetups. Record a short video when you have five minutes; your people watch and reply when they have theirs. Free on iOS and Android."
+  description="Bondfires is where your group keeps talking between meetups. Record a video when you have a minute; your people watch and reply when they have theirs. Free on iOS and Android."
   path="/"
   jsonLd={[appLd, faqLd]}
 >
@@ -66,8 +66,8 @@ const appLd = {
         <p class="eyebrow">Video conversations for small groups</p>
         <h1>Your group, on your own time.</h1>
         <p class="lede">
-          Record a short video when you have five minutes. Your people watch and reply when they have
-          theirs. No scheduling, no 400-message group chat.
+          Record a video when you have a minute. Your people watch and reply when they have theirs.
+          No scheduling, no 400-message group chat.
         </p>
         <div class="hero-actions">
           <StoreBadges campaign="home_hero" size="lg" />
@@ -86,7 +86,7 @@ const appLd = {
     <div class="container">
       <div class="problem-grid">
         <p>Your group chat has 400 unread messages and zero actual conversation.</p>
-        <p>Your men’s group meets once a month. If everyone can make it.</p>
+        <p>Your group meets once a month. If everyone can make it.</p>
         <p>The friend you’d call first hasn’t heard your voice since March.</p>
       </div>
     </div>
@@ -122,13 +122,13 @@ const appLd = {
         <p class="eyebrow">A Bondfire, up close</p>
         <h2>One spark. A stack of faces answering it.</h2>
         <p class="lede">
-          Someone records two minutes about the thing they didn’t say at dinner. By the next morning
+          Someone records a Bondfire about the thing they didn’t say at dinner. By the next morning
           three people have answered, each in their own time, each with their own face.
         </p>
         <ul class="demo-points">
           <li><strong>The Ember Rail</strong> sits at the top of Home. A copper ring means someone answered you. A gold dot means your spark is still waiting.</li>
           <li><strong>Threads, not feeds.</strong> Responses stack under the spark so a conversation stays a conversation.</li>
-          <li><strong>Titles and tags, written for you.</strong> Every video is transcribed and summarised so you can find the one about the job offer in October.</li>
+          <li><strong>Captions, summaries, and tags, written for you.</strong> Every video is captioned and summarised, so you can skim a thread in seconds or find the one about the job offer in October.</li>
         </ul>
       </div>
       <div class="demo-thread" aria-hidden="true">
@@ -137,7 +137,7 @@ const appLd = {
           <div>
             <span class="who">Marcus <small>sparked · Thursday Guys</small></span>
             <span class="ttl">The thing I didn’t say at dinner</span>
-            <span class="dur">2:14</span>
+            <span class="dur">7:05</span>
           </div>
         </div>
         <div class="resp">
@@ -188,7 +188,7 @@ const appLd = {
       <div class="grid grid-3">
         <div>
           <h3>Faces, not bubbles.</h3>
-          <p class="muted">A two-minute video carries tone, a laugh, the pause before the honest part. Text drops all of it.</p>
+          <p class="muted">Video carries tone, a laugh, the pause before the honest part. Text drops all of it. And when you need to read instead, every Bondfire has captions and a summary.</p>
         </div>
         <div>
           <h3>Nobody has to be free at 8.</h3>
@@ -264,7 +264,7 @@ const appLd = {
     <div class="container final-card">
       <div>
         <h2>Light one tonight.</h2>
-        <p class="lede">Download Bondfires, join your camp, and record the first two minutes. The rest of the group will hear it in the morning.</p>
+        <p class="lede">Download Bondfires, join your camp, and record the first Bondfire. The rest of the group will hear it in the morning.</p>
         <StoreBadges campaign="home_footer" size="lg" />
       </div>
       <Qr url={`${SITE_URL}/get?c=home_qr`} label="Scan on your phone" size="150" />

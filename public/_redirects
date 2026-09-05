@@ -7,3 +7,6 @@
 # Legacy page that folded into the homepage.
 /how-it-works /#how-it-works 301
 /how-it-works.html /#how-it-works 301
+
+# Retired landing page.
+/for/mens-groups /for/groups 301

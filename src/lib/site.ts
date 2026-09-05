@@ -45,7 +45,7 @@ export const STEPS = [
   },
   {
     title: 'Spark a Bondfire.',
-    body: 'Record what’s on your mind. A win, a question, something you’re wrestling with. Two minutes is plenty.',
+    body: 'Record what’s on your mind. A win, a question, something you’re wrestling with. As short or as long as it needs to be.',
   },
   {
     title: 'Your people respond with video, when they’re ready.',
