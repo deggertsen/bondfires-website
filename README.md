@@ -28,7 +28,7 @@ src/
   styles/global.css design tokens (mirror of docs/Brand Kit.js in the app repo)
 public/
   _headers, _redirects, robots.txt, .well-known/, images/, favicon
-worker/index.js     Worker: /get → App Store or Google Play by user agent; else assets
+worker/index.js     Worker: /get → TestFlight or Play closed testing by user agent; else assets
 scripts/generate-og.mjs
 scripts/validate-app-links.mjs
 ```
@@ -40,7 +40,7 @@ Every push to `main` installs dependencies, runs `npm run build` (from
 `wrangler.jsonc` → `build.command`), and deploys `dist/` as static assets behind
 the small Worker in `worker/index.js`. Pull requests get a preview build check.
 
-- `worker/index.js` only handles `/get` (device-aware store redirect). Everything
+- `worker/index.js` only handles `/get` (device-aware closed-testing redirect). Everything
   else is served from the asset store, with `public/_headers` and
   `public/_redirects` applied.
 - No dashboard build settings are required beyond the Git connection. If the

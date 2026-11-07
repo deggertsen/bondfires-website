@@ -4,8 +4,17 @@ export const SITE_URL = 'https://bondfires.org'
 export const SITE_NAME = 'Bondfires'
 export const TAGLINE = 'Reclaim the Power of Conversation'
 
+/** Public listings. Keep identical to packages/app/src/hooks/useForceUpdate.ts. */
 export const APP_STORE_URL = 'https://apps.apple.com/us/app/bondfires/id6755933598'
 export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=org.bondfires'
+
+/** Closed-testing opt-in. Website download CTAs use these until the app is public. */
+export const TESTFLIGHT_URL = 'https://testflight.apple.com/join/2v553mf9'
+export const PLAY_TESTING_URL = 'https://play.google.com/apps/testing/org.bondfires'
+
+/** Where the site sends someone who wants the app right now. */
+export const IOS_DOWNLOAD_URL = TESTFLIGHT_URL
+export const ANDROID_DOWNLOAD_URL = PLAY_TESTING_URL
 export const IOS_MIN = 'iOS 15.0 or later'
 export const ANDROID_MIN = 'Android 8.0 or later'
 
