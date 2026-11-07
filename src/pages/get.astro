@@ -8,23 +8,29 @@
  */
 import Base from '../layouts/Base.astro'
 import StoreBadges from '../components/StoreBadges.astro'
-import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/site'
+import { ANDROID_DOWNLOAD_URL, IOS_DOWNLOAD_URL } from '../lib/site'
 ---
 
-<Base title="Get the app" description="Sending you to the right app store for your device." minimal noindex>
+<Base title="Get the app" description="Sending you to closed testing for your device." minimal noindex>
   <section class="wrap">
     <div class="card">
-      <h1>Taking you to the store…</h1>
-      <p class="muted">If nothing happens, pick your platform.</p>
+      <h1>Taking you to closed testing…</h1>
+      <p class="muted">If nothing happens, pick your platform and opt in.</p>
       <StoreBadges campaign="get_fallback" align="center" />
     </div>
   </section>
-  <script is:inline define:vars={{ APP_STORE_URL, PLAY_STORE_URL }}>
+  <script is:inline define:vars={{ ANDROID_DOWNLOAD_URL, IOS_DOWNLOAD_URL }}>
     const ua = navigator.userAgent
     const c = new URLSearchParams(location.search).get('c') || 'get'
-    const utm = `utm_source=website&utm_medium=referral&utm_campaign=${encodeURIComponent(c)}`
-    if (/android/i.test(ua)) location.replace(`${PLAY_STORE_URL}&${utm}`)
-    else if (/iphone|ipad|ipod/i.test(ua)) location.replace(`${APP_STORE_URL}?${utm}`)
+    function go(base) {
+      const target = new URL(base)
+      target.searchParams.set('utm_source', 'website')
+      target.searchParams.set('utm_medium', 'referral')
+      target.searchParams.set('utm_campaign', c)
+      location.replace(target.toString())
+    }
+    if (/android/i.test(ua)) go(ANDROID_DOWNLOAD_URL)
+    else if (/iphone|ipad|ipod/i.test(ua)) go(IOS_DOWNLOAD_URL)
     else location.replace('/download')
   </script>
 </Base>
