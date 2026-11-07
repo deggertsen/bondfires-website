@@ -21,7 +21,7 @@ src/
   pages/            one .astro file per route (index, about, pricing, faq, download, get,
                     support, for/groups, invite, legal pages, 404)
   layouts/          Base.astro (head/SEO/nav/footer), Legal.astro
-  components/       Nav, Footer, Logo, StoreBadges, Qr, PhoneMock, EmberCanvas
+  components/       Nav, Footer, Logo, StoreBadges, Qr, PhoneMock, ThreadMock, EmberCanvas
   lib/site.ts       store URLs, emails, nav, the three-step story
   lib/faq.ts        FAQ content (also drives FAQ structured data)
   legal/*.html      legal page bodies (privacy, terms, guidelines, child safety, delete account)
@@ -103,6 +103,32 @@ These are linked from the app stores, the app, and transactional email:
   a real dark-theme screenshot (390×844 or 3×) to replace it.
 - Founder portraits on `/about` and the homepage (currently initials).
 - Testimonials from beta camps (none on the site yet; nothing is fabricated).
+
+## Keeping product copy and mockups current
+
+The current illustrations and product claims were checked against the app at
+[`19aee41`](https://github.com/deggertsen/bondfires/tree/19aee41). Treat executable
+rules and current screens as the reference; older comments still describe retired behavior.
+
+| Site content | App source |
+| --- | --- |
+| Home illustration | `apps/mobile/app/(main)/(tabs)/feed.tsx`, `packages/ui/src/EmberRail.tsx`, `packages/ui/src/BondfireRow.tsx` |
+| Thread illustration | `apps/mobile/app/(main)/bondfire/_components/ThreadBrowser.tsx` |
+| Recording limits and spark permissions | `convex/entitlements.ts`, `convex/bondfires.ts` |
+| Hearth audience (Plus: 2 total; Premium/Pro: 8 total), access, recording-time invites | `convex/personalBondfireAccess.ts`, `convex/personalBondfires.ts` |
+| Retention and camp lifecycle | `convex/bondfireRetention.ts`, `convex/campKindling.ts` |
+| Reactions and notification categories | `convex/videoReactions.ts`, `convex/sendNotification.ts` |
+| Minimum OS versions | `apps/mobile/app.json` |
+
+Hearth access is per conversation, not shared camp membership. Illustrations use
+fictional people and conversations, and do not imply a private recording preview:
+authorized viewers can watch while recording is in progress.
+
+After changing these components, build and check `/`, `/download`, `/pricing`, and
+`/faq` on desktop and at 320px and 375px. Check internal mockup clipping as well as
+page overflow: the phone tab bar must stay separate from the cropped feed, and
+thread metadata must fit its card. FAQ copy also feeds JSON-LD on `/` and `/faq`.
+
 
 ## License
 

@@ -1,0 +1,270 @@
+---
+/** Fictional example based on the app’s ThreadBrowser.tsx at 19aee41. */
+const threadDemo = [
+  {
+    who: 'Marcus',
+    spark: true,
+    when: 'Nov 6, 8:12 PM',
+    tag: 'family',
+    tone: '#6B5B95',
+    reactions: '❤️ 🔥 4',
+    state: 'seen',
+    summary:
+      'Marcus admits he never apologised to his brother after the wedding, and asks how to start that call.',
+  },
+  {
+    who: 'Jake',
+    when: 'Nov 6, 11:40 PM',
+    tag: 'advice',
+    tone: '#4B6587',
+    reactions: '🙏 2',
+    state: 'now',
+    summary:
+      'Jake says start with the apology, not the explanation. He did it with his dad last spring and wishes he hadn’t waited.',
+  },
+  {
+    who: 'Theo',
+    when: 'Nov 7, 6:55 AM',
+    tag: 'support',
+    tone: '#8A5A44',
+    state: 'new',
+    summary:
+      'Theo offers to be the one Marcus calls right after, whatever happens.',
+  },
+  {
+    who: 'Ren',
+    when: 'Nov 7, 7:30 AM',
+    tag: 'advice',
+    tone: '#5B7B5A',
+    state: 'new',
+    summary:
+      'Ren suggests writing the first sentence down so it actually comes out.',
+  },
+]
+---
+
+<!-- Mirrors the app's thread browser sheet (ThreadBrowser.tsx): who and
+           when on the first line, the AI summary below, NOW / NEW / seen on
+           the right. People and words are fictional. -->
+<div
+  class="demo-thread"
+  role="img"
+  aria-label="Rendering of a Bondfire thread in the app: Marcus’s spark and three video responses, each with a short summary"
+>
+  <span class="handle"></span>
+  <div class="sheet-head">
+    <span class="sheet-title">The thing I didn’t say at dinner</span>
+    <span class="sheet-meta">4 videos · 2 new</span>
+  </div>
+  {threadDemo.map((v) => (
+    <div class={`tb-row ${v.state === 'now' ? 'now' : ''}`}>
+      <span class="av" style={`background:${v.tone}`}>
+        {v.who[0]}
+      </span>
+      <div class="tb-lines">
+        <div class="tb-head">
+          <span class="tb-identity">
+            {v.spark && (
+              <svg
+                class="tb-flame"
+                viewBox="0 0 24 24"
+                width="12"
+                height="12"
+                aria-hidden="true"
+              >
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+              </svg>
+            )}
+            <span class="tb-who">{v.who}</span>
+            <span class="when">{v.when}</span>
+            <span class="tag">{v.tag}</span>
+          </span>
+          <span class="tb-end">
+            {v.reactions && <span class="react">{v.reactions}</span>}
+            {v.state === 'now' && <span class="mark now">NOW</span>}
+            {v.state === 'new' && <span class="mark new">NEW</span>}
+            {v.state === 'seen' && <span class="mark seen">✓</span>}
+          </span>
+        </div>
+        <p class="summary">{v.summary}</p>
+      </div>
+    </div>
+  ))}
+  <div class="tb-respond">
+    <span>Respond</span>
+  </div>
+</div>
+
+<style>
+  /* Thread browser sheet (mirrors ThreadBrowser.tsx in the app) */
+  .demo-thread {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 8px 10px 14px;
+    background: var(--iron);
+    border-radius: 22px;
+    box-shadow:
+      0 30px 80px -30px rgba(0, 0, 0, 0.9),
+      0 0 80px -30px var(--copper);
+  }
+  .handle {
+    justify-self: center;
+    width: 40px;
+    height: 5px;
+    border-radius: 3px;
+    background: #4a4d54;
+    margin-bottom: 6px;
+  }
+  .sheet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 4px 8px 8px;
+  }
+  .sheet-title {
+    min-width: 0;
+    font-weight: 800;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sheet-meta {
+    font-size: 0.75rem;
+    color: var(--ash);
+    white-space: nowrap;
+  }
+  .tb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+  }
+  .tb-row.now {
+    border-color: var(--copper);
+    background: var(--gunmetal);
+  }
+  .av {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .tb-lines {
+    flex: 1;
+    min-width: 0;
+  }
+  .tb-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+  .tb-flame {
+    fill: none;
+    stroke: var(--copper);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  .tb-identity {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px 7px;
+    min-width: 0;
+    flex: 1;
+  }
+  .tb-who {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .when {
+    font-size: 0.7rem;
+    color: var(--ash);
+    white-space: nowrap;
+  }
+  .tag {
+    font-size: 0.65rem;
+    color: var(--ash);
+    background: #44474e;
+    padding: 1px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .tb-end {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .react {
+    font-size: 0.68rem;
+    color: var(--smoke);
+    background: var(--gunmetal);
+    border: 1px solid #44474e;
+    padding: 1px 7px;
+    border-radius: 9px;
+    white-space: nowrap;
+  }
+  .mark {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  .mark.now {
+    color: var(--copper);
+  }
+  .mark.new {
+    color: var(--obsidian);
+    background: var(--gold);
+    padding: 1px 5px;
+    border-radius: 5px;
+  }
+  .mark.seen {
+    color: var(--ash);
+    letter-spacing: 0;
+    font-size: 0.75rem;
+  }
+  .summary {
+    margin: 3px 0 0;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--ash);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tb-respond {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .tb-respond span {
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 9px 28px;
+    border-radius: 12px;
+    border: 1px solid var(--copper);
+    background: var(--gunmetal);
+  }
+</style>
