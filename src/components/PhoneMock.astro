@@ -14,7 +14,12 @@ interface Props {
   class?: string
   tilt?: boolean
 }
-const { src, alt = 'The Bondfires app', class: className = '', tilt = false } = Astro.props
+const {
+  src,
+  alt = 'The Bondfires app',
+  class: className = '',
+  tilt = false,
+} = Astro.props
 
 /** Warm, muted video-frame tones for the drawn thumbnails. */
 const tones = {
@@ -85,20 +90,31 @@ const thumb = (tone: string) =>
 
 <div class={`phone ${tilt ? 'tilt' : ''} ${className}`}>
   <div class="screen">
-    {
-      src ? (
-        <img src={src} alt={alt} width="390" height="844" loading="eager" decoding="async" />
-      ) : (
-        <div
-          class="ui"
-          role="img"
-          aria-label="Rendering of the Bondfires Home screen: your fires along the top, threads with new responses, and Discover"
-        >
-          <div class="status">
-            <span>9:41</span>
-            <span class="dots"><i></i><i></i><i></i></span>
-          </div>
+    {src ? (
+      <img
+        src={src}
+        alt={alt}
+        width="390"
+        height="844"
+        loading="eager"
+        decoding="async"
+      />
+    ) : (
+      <div
+        class="ui"
+        role="img"
+        aria-label="Rendering of the Bondfires Home screen: your fires along the top, threads with new responses, and Discover"
+      >
+        <div class="status">
+          <span>9:41</span>
+          <span class="dots">
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+        </div>
 
+        <div class="feed">
           <div class="head">
             <div>
               <span class="h">Home</span>
@@ -110,7 +126,12 @@ const thumb = (tone: string) =>
           <div class="rail">
             <div class="tile">
               <span class="ring all">
-                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                >
                   <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
                 </svg>
                 <span class="count">{totalFires}</span>
@@ -153,10 +174,16 @@ const thumb = (tone: string) =>
                       ))}
                     </span>
                     <span class="replies">
-                      <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="11"
+                        height="11"
+                        aria-hidden="true"
+                      >
                         <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
                       </svg>
-                      {t.responses} {t.responses === 1 ? 'response' : 'responses'}
+                      {t.responses}{' '}
+                      {t.responses === 1 ? 'response' : 'responses'}
                     </span>
                     <span class="camp">{t.camp}</span>
                   </span>
@@ -183,40 +210,40 @@ const thumb = (tone: string) =>
               <span class={`pill ${i === 0 ? 'on' : ''}`}>{m}</span>
             ))}
           </div>
-
-          <div class="tabs">
-            <span class="tab">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
-                <line x1="9" x2="9" y1="3" y2="18" />
-                <line x1="15" x2="15" y1="6" y2="21" />
-              </svg>
-              Camps
-            </span>
-            <span class="tab on">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-              Home
-            </span>
-            <span class="tab">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-              </svg>
-              Spark
-            </span>
-            <span class="tab">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              Profile
-            </span>
-          </div>
         </div>
-      )
-    }
+
+        <div class="tabs">
+          <span class="tab">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+              <line x1="9" x2="9" y1="3" y2="18" />
+              <line x1="15" x2="15" y1="6" y2="21" />
+            </svg>
+            Camps
+          </span>
+          <span class="tab on">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            Home
+          </span>
+          <span class="tab">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+            </svg>
+            Spark
+          </span>
+          <span class="tab">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            Profile
+          </span>
+        </div>
+      </div>
+    )}
   </div>
 </div>
 
@@ -225,6 +252,7 @@ const thumb = (tone: string) =>
     position: relative;
     width: 100%;
     max-width: 330px;
+    min-width: 0;
     aspect-ratio: 390 / 844;
     border-radius: 44px;
     background: #0b0b0d;
@@ -302,6 +330,13 @@ const thumb = (tone: string) =>
     border-radius: 50%;
     background: var(--smoke);
     opacity: 0.85;
+  }
+
+  /* Crop the feed like a scroll view, keeping the tab bar outside it. */
+  .feed {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .head {
@@ -575,10 +610,7 @@ const thumb = (tone: string) =>
   }
 
   .tabs {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    flex-shrink: 0;
     display: flex;
     justify-content: space-around;
     padding: 7px 8px 20px;

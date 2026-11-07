@@ -50,7 +50,7 @@ export const NAV = [
 export const STEPS = [
   {
     title: 'Join your camp, or start one.',
-    body: 'A camp is your group’s home on Bondfires. Public, invite-only, or a hearth just for the people closest to you.',
+    body: 'A camp is your group’s home on Bondfires. Join a public or invite-only camp, or use your Hearth to invite people to individual conversations.',
   },
   {
     title: 'Spark a Bondfire.',

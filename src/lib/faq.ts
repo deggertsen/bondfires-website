@@ -17,11 +17,11 @@ export const FAQ: Faq[] = [
   },
   {
     q: 'What is a camp?',
-    a: 'A camp is a group’s home on Bondfires. Camps can be public (anyone can join), private (invite-only, run by a group leader), or a hearth, which is your own small space for the people closest to you.',
+    a: 'A camp is a group’s home on Bondfires. Camps can be public or invite-only. A Hearth is a separate personal space where you invite people to individual conversations.',
   },
   {
     q: 'What is a hearth?',
-    a: 'A hearth is a private camp just for you and the people you invite: close friends, siblings, your kids who moved away. You control who is in it. Hearths have their own notification setting, so you can keep them on even when you quiet everything else.',
+    a: 'A Hearth is your personal space for conversations with the people closest to you. You choose who joins each conversation: you and one other person on Plus, or you and up to seven others on Premium or Pro. Hearths have their own notification setting.',
   },
   {
     q: 'Is it free?',
@@ -31,20 +31,20 @@ export const FAQ: Faq[] = [
   {
     q: 'Why video instead of text?',
     home: true,
-    a: 'Because your face and your voice carry what text drops. Tone, hesitation, a laugh, the thing you almost didn’t say. A video from a friend lands differently than two paragraphs. And you don’t have to choose: every Bondfire gets captions and a short written summary, so you can skim a thread, or catch up somewhere you can’t listen.',
+    a: 'Because your face and your voice carry what text drops. Tone, hesitation, a laugh, the thing you almost didn’t say. A video from a friend lands differently than two paragraphs. And you don’t have to choose: automatic captions and summaries become available after processing, so you can skim a thread, or catch up somewhere you can’t listen.',
   },
   {
     q: 'I’m not comfortable on camera.',
-    a: 'Most people aren’t at first. You record in private, on your own time. Nobody is watching you live. After a few Bondfires, most people forget the camera is there.',
+    a: 'Most people aren’t at first. Start with a short hello to someone you trust. People with access to the conversation can watch while you record or catch up later, so choose your audience before you start. After a few Bondfires, most people forget the camera is there.',
   },
   {
     q: 'Who can see my videos?',
     home: true,
-    a: 'Only the members of the camp you posted in. Bondfires are never public on the internet, we don’t sell your data, and we don’t use your conversations for advertising. Read the privacy policy for the full picture.',
+    a: 'Access depends on where you post. For a private camp, it follows camp membership; for a Hearth conversation, it follows that conversation’s invited participants. Public camps are for a wider audience in the app. People with access can watch while you record as well as afterward. Read the privacy policy for the full picture.',
   },
   {
     q: 'Do I have to watch everything?',
-    a: 'No. Every Bondfire is captioned and gets a short written summary and a few tags, and each thread gets a title. You can read the gist of a thread in a few seconds and watch the ones that matter. Captions also mean you can follow along with the sound off.',
+    a: 'No. Automatic captions, summaries, tags, and thread titles help you catch up after processing. You can read the gist of a thread in a few seconds and watch the ones that matter. Captions also mean you can follow along with the sound off.',
   },
   {
     q: 'How long can a video be?',

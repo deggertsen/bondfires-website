@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro'
 import StoreBadges from '../components/StoreBadges.astro'
 import PhoneMock from '../components/PhoneMock.astro'
+import ThreadMock from '../components/ThreadMock.astro'
 import EmberCanvas from '../components/EmberCanvas.astro'
 import Qr from '../components/Qr.astro'
 import { STEPS, SITE_URL } from '../lib/site'
@@ -27,44 +28,6 @@ const audiences = [
     title: 'Faith, recovery, and mastermind groups',
     body: 'Groups that already have a leader and a rhythm. One person sets up the camp, everyone shows up between meetings.',
     href: '/for/groups',
-  },
-]
-
-const threadDemo = [
-  {
-    who: 'Marcus',
-    spark: true,
-    when: 'Nov 6, 8:12 PM',
-    tag: 'family',
-    tone: '#6B5B95',
-    reactions: '❤️ 🔥 4',
-    state: 'seen',
-    summary: 'Marcus admits he never apologised to his brother after the wedding, and asks how to start that call.',
-  },
-  {
-    who: 'Jake',
-    when: 'Nov 6, 11:40 PM',
-    tag: 'advice',
-    tone: '#4B6587',
-    reactions: '🙏 2',
-    state: 'now',
-    summary: 'Jake says start with the apology, not the explanation. He did it with his dad last spring and wishes he hadn’t waited.',
-  },
-  {
-    who: 'Theo',
-    when: 'Nov 7, 6:55 AM',
-    tag: 'support',
-    tone: '#8A5A44',
-    state: 'new',
-    summary: 'Theo offers to be the one Marcus calls right after, whatever happens.',
-  },
-  {
-    who: 'Ren',
-    when: 'Nov 7, 7:30 AM',
-    tag: 'advice',
-    tone: '#5B7B5A',
-    state: 'new',
-    summary: 'Ren suggests writing the first sentence down so it actually comes out.',
   },
 ]
 
@@ -104,14 +67,18 @@ const appLd = {
         <p class="eyebrow">Video conversations for small groups</p>
         <h1>Your group, on your own time.</h1>
         <p class="lede">
-          Record a video when you have a minute. Your people watch and reply when they have theirs.
-          No scheduling, no 400-message group chat.
+          Record a video when you have a minute. Your people watch and reply
+          when they have theirs. No scheduling, no 400-message group chat.
         </p>
         <div class="hero-actions">
           <StoreBadges campaign="home_hero" size="lg" />
-          <a href="#how-it-works" class="watch">See how it works ↓</a>
+          <a href="#how-it-works" class="watch">
+            See how it works ↓
+          </a>
         </div>
-        <p class="fine muted">Closed testing on iPhone and Android. Free to join and respond.</p>
+        <p class="fine muted">
+          Closed testing on iPhone and Android. Free to join and respond.
+        </p>
       </div>
       <div class="hero-phone">
         <PhoneMock tilt />
@@ -123,7 +90,9 @@ const appLd = {
   <section class="section problem">
     <div class="container">
       <div class="problem-grid">
-        <p>Your group chat has 400 unread messages and zero actual conversation.</p>
+        <p>
+          Your group chat has 400 unread messages and zero actual conversation.
+        </p>
         <p>Your group meets once a month. If everyone can make it.</p>
         <p>The friend you’d call first hasn’t heard your voice since March.</p>
       </div>
@@ -138,17 +107,17 @@ const appLd = {
         <h2>Three steps. The third one is the whole point.</h2>
       </div>
       <ol class="steps">
-        {
-          STEPS.map((s, i) => (
-            <li class="step">
-              <span class="num" aria-hidden="true">{i + 1}</span>
-              <div>
-                <h3>{s.title}</h3>
-                <p class="muted">{s.body}</p>
-              </div>
-            </li>
-          ))
-        }
+        {STEPS.map((s, i) => (
+          <li class="step">
+            <span class="num" aria-hidden="true">
+              {i + 1}
+            </span>
+            <div>
+              <h3>{s.title}</h3>
+              <p class="muted">{s.body}</p>
+            </div>
+          </li>
+        ))}
       </ol>
     </div>
   </section>
@@ -160,55 +129,32 @@ const appLd = {
         <p class="eyebrow">A Bondfire, up close</p>
         <h2>One spark. A stack of faces answering it.</h2>
         <p class="lede">
-          Someone records a Bondfire about the thing they didn’t say at dinner. By the next morning
-          three people have answered, each in their own time, each with their own face.
+          Someone records a Bondfire about the thing they didn’t say at dinner.
+          By the next morning three people have answered, each in their own
+          time, each with their own face.
         </p>
         <ul class="demo-points">
-          <li><strong>Your fires, at the top of Home.</strong> A copper ring means a thread has new responses. A gold dot means your spark is still waiting for its first answer.</li>
-          <li><strong>Threads, not feeds.</strong> Responses stack under the spark so a conversation stays a conversation.</li>
-          <li><strong>Captions, summaries, and tags, written for you.</strong> Every video is captioned, summarised, and tagged, so you can skim a thread in seconds or follow along with the sound off.</li>
-          <li><strong>Reactions, when you can’t record.</strong> Tap an emoji on any video to let them know it landed, then answer properly later.</li>
+          <li>
+            <strong>Your fires, at the top of Home.</strong> A copper ring means
+            a thread has new responses. A gold dot means your spark is still
+            waiting for its first answer.
+          </li>
+          <li>
+            <strong>Threads, not feeds.</strong> Responses stack under the spark
+            so a conversation stays a conversation.
+          </li>
+          <li>
+            <strong>Captions, summaries, and tags, written for you.</strong>{' '}
+            Automatic captions, summaries, and tags help you skim a thread or
+            follow along with the sound off once processing is complete.
+          </li>
+          <li>
+            <strong>Reactions, when you can’t record.</strong> Tap an emoji on
+            any video to let them know it landed, then answer properly later.
+          </li>
         </ul>
       </div>
-      <!-- Mirrors the app's thread browser sheet (ThreadBrowser.tsx): who and
-           when on the first line, the AI summary below, NOW / NEW / seen on
-           the right. People and words are fictional. -->
-      <div class="demo-thread" role="img" aria-label="Rendering of a Bondfire thread in the app: Marcus’s spark and three video responses, each with a one-line summary">
-        <span class="handle"></span>
-        <div class="sheet-head">
-          <span class="sheet-title">The thing I didn’t say at dinner</span>
-          <span class="sheet-meta">4 videos · 2 new</span>
-        </div>
-        {
-          threadDemo.map((v) => (
-            <div class={`tb-row ${v.state === 'now' ? 'now' : ''}`}>
-              <span class="av" style={`background:${v.tone}`}>{v.who[0]}</span>
-              <div class="tb-lines">
-                <div class="tb-head">
-                  {v.spark && (
-                    <svg class="tb-flame" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
-                      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-                    </svg>
-                  )}
-                  <span class="tb-who">{v.who}</span>
-                  <span class="when">{v.when}</span>
-                  <span class="tag">{v.tag}</span>
-                  <span class="tb-end">
-                    {v.reactions && <span class="react">{v.reactions}</span>}
-                    {v.state === 'now' && <span class="mark now">NOW</span>}
-                    {v.state === 'new' && <span class="mark new">NEW</span>}
-                    {v.state === 'seen' && <span class="mark seen">✓</span>}
-                  </span>
-                </div>
-                <p class="summary">{v.summary}</p>
-              </div>
-            </div>
-          ))
-        }
-        <div class="tb-respond">
-          <span>Respond</span>
-        </div>
-      </div>
+      <ThreadMock />
     </div>
   </section>
 
@@ -218,22 +164,23 @@ const appLd = {
       <div class="section-head">
         <p class="eyebrow">Who gathers here</p>
         <h2>Built for groups that already exist.</h2>
-        <p>Bondfires isn’t a feed of strangers. It’s the people you already have, showing up more often.</p>
+        <p>
+          Bondfires isn’t a feed of strangers. It’s the people you already have,
+          showing up more often.
+        </p>
       </div>
       <div class="grid grid-2 aud">
-        {
-          audiences.map((a) => (
-            <article class="card aud-card">
-              <h3>{a.title}</h3>
-              <p class="muted">{a.body}</p>
-              {a.href && (
-                <a href={a.href} class="more">
-                  Learn more →
-                </a>
-              )}
-            </article>
-          ))
-        }
+        {audiences.map((a) => (
+          <article class="card aud-card">
+            <h3>{a.title}</h3>
+            <p class="muted">{a.body}</p>
+            {a.href && (
+              <a href={a.href} class="more">
+                Learn more →
+              </a>
+            )}
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -244,15 +191,26 @@ const appLd = {
       <div class="grid grid-3">
         <div>
           <h3>Faces, not bubbles.</h3>
-          <p class="muted">Video carries tone, a laugh, the pause before the honest part. Text drops all of it. And when you need to read instead, every Bondfire has captions and a summary.</p>
+          <p class="muted">
+            Video carries tone, a laugh, the pause before the honest part. Text
+            drops all of it. And when you need to read instead, automatic
+            captions and summaries help you catch up after processing.
+          </p>
         </div>
         <div>
           <h3>Nobody has to be free at 8.</h3>
-          <p class="muted">Post when you can. Reply when you can. The thread waits, and the notification tells you exactly who answered.</p>
+          <p class="muted">
+            Post when you can. Reply when you can. The thread waits, and the
+            notification tells you exactly who answered.
+          </p>
         </div>
         <div>
           <h3>Small, private, and yours.</h3>
-          <p class="muted">Only your camp sees your videos. No ads, no algorithm, no strangers. What’s shared in a camp stays in the camp.</p>
+          <p class="muted">
+            In a private camp, only members can watch. In your Hearth, only
+            people invited to that conversation can watch. Choose the space and
+            audience that fit what you want to share.
+          </p>
         </div>
       </div>
     </div>
@@ -267,12 +225,17 @@ const appLd = {
       </div>
       <div>
         <p class="eyebrow">From the founders</p>
-        <h2>Two engineers. One friendship that kept dying in the group chat.</h2>
+        <h2>
+          Two engineers. One friendship that kept dying in the group chat.
+        </h2>
         <p class="lede">
-          David and Jake built Bondfires because the people they cared about most were the people they
-          talked to least. Not for lack of wanting to. For lack of a Tuesday night that worked for everyone.
+          David and Jake built Bondfires because the people they cared about
+          most were the people they talked to least. Not for lack of wanting to.
+          For lack of a Tuesday night that worked for everyone.
         </p>
-        <a href="/about" class="btn btn-secondary">Read the story</a>
+        <a href="/about" class="btn btn-secondary">
+          Read the story
+        </a>
       </div>
     </div>
   </section>
@@ -283,13 +246,19 @@ const appLd = {
       <div class="price-card">
         <div>
           <p class="eyebrow">Free to join and respond</p>
-          <h2>Join a camp, watch everything, reply with up to five minutes of video. Free.</h2>
+          <h2>
+            Join a camp, watch everything, reply with up to five minutes of
+            video. Free.
+          </h2>
           <p class="muted">
-            Starting your own Bondfires and running a hearth for your closest people is Plus, or
-            Premium to keep every hearth video. Leading camps for a whole group is Pro.
+            Starting your own Bondfires and running a hearth for your closest
+            people is Plus, or Premium for longer retention and more people in
+            each Hearth conversation. Leading camps for a whole group is Pro.
           </p>
         </div>
-        <a href="/pricing" class="btn btn-secondary btn-lg">See all plans</a>
+        <a href="/pricing" class="btn btn-secondary btn-lg">
+          See all plans
+        </a>
       </div>
     </div>
   </section>
@@ -300,17 +269,17 @@ const appLd = {
       <div>
         <p class="eyebrow">Questions</p>
         <h2>The ones people actually ask.</h2>
-        <a href="/faq" class="more">All questions →</a>
+        <a href="/faq" class="more">
+          All questions →
+        </a>
       </div>
       <div class="faq-list">
-        {
-          homeFaq.map((f) => (
-            <details>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))
-        }
+        {homeFaq.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
       </div>
     </div>
   </section>
@@ -320,10 +289,17 @@ const appLd = {
     <div class="container final-card">
       <div>
         <h2>Light one tonight.</h2>
-        <p class="lede">Download Bondfires, join your camp, and record the first Bondfire. The rest of the group will hear it in the morning.</p>
+        <p class="lede">
+          Download Bondfires, join your camp, and record the first Bondfire. The
+          rest of the group will hear it in the morning.
+        </p>
         <StoreBadges campaign="home_footer" size="lg" />
       </div>
-      <Qr url={`${SITE_URL}/get?c=home_qr`} label="Scan on your phone" size="150" />
+      <Qr
+        url={`${SITE_URL}/get?c=home_qr`}
+        label="Scan on your phone"
+        size="150"
+      />
     </div>
   </section>
 </Base>
@@ -343,6 +319,9 @@ const appLd = {
     .hero {
       padding: var(--space-9) 0 var(--space-8);
     }
+  }
+  .hero-grid > * {
+    min-width: 0;
   }
   .hero-grid {
     position: relative;
@@ -465,6 +444,9 @@ const appLd = {
       var(--obsidian);
     border-top: 1px solid var(--iron);
   }
+  .demo-grid > * {
+    min-width: 0;
+  }
   .demo-grid {
     display: grid;
     gap: var(--space-7);
@@ -489,180 +471,6 @@ const appLd = {
   }
   .demo-points strong {
     color: var(--smoke);
-  }
-  /* Thread browser sheet (mirrors ThreadBrowser.tsx in the app) */
-  .demo-grid > * {
-    min-width: 0;
-  }
-  .demo-thread {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
-    width: 100%;
-    max-width: 440px;
-    margin: 0 auto;
-    padding: 8px 10px 14px;
-    background: var(--iron);
-    border-radius: 22px;
-    box-shadow:
-      0 30px 80px -30px rgba(0, 0, 0, 0.9),
-      0 0 80px -30px var(--copper);
-  }
-  .handle {
-    justify-self: center;
-    width: 40px;
-    height: 5px;
-    border-radius: 3px;
-    background: #4a4d54;
-    margin-bottom: 6px;
-  }
-  .sheet-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    padding: 4px 8px 8px;
-  }
-  .sheet-title {
-    min-width: 0;
-    font-weight: 800;
-    font-size: 1.05rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .sheet-meta {
-    font-size: 0.75rem;
-    color: var(--ash);
-    white-space: nowrap;
-  }
-  .tb-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 14px;
-    border: 1px solid transparent;
-  }
-  .tb-row.now {
-    border-color: var(--copper);
-    background: var(--gunmetal);
-  }
-  .av {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    color: #fff;
-    flex-shrink: 0;
-  }
-  .tb-lines {
-    flex: 1;
-    min-width: 0;
-  }
-  .tb-head {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    min-width: 0;
-  }
-  .tb-flame {
-    fill: none;
-    stroke: var(--copper);
-    stroke-width: 2.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    flex-shrink: 0;
-  }
-  .tb-who {
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-  .when {
-    font-size: 0.7rem;
-    color: var(--ash);
-    white-space: nowrap;
-  }
-  .tag {
-    font-size: 0.65rem;
-    color: var(--ash);
-    background: #44474e;
-    padding: 1px 7px;
-    border-radius: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-  }
-  .tb-end {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-  .react {
-    font-size: 0.68rem;
-    color: var(--smoke);
-    background: var(--gunmetal);
-    border: 1px solid #44474e;
-    padding: 1px 7px;
-    border-radius: 9px;
-    white-space: nowrap;
-  }
-  .mark {
-    font-size: 0.6rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-  }
-  .mark.now {
-    color: var(--copper);
-  }
-  .mark.new {
-    color: var(--obsidian);
-    background: var(--gold);
-    padding: 1px 5px;
-    border-radius: 5px;
-  }
-  .mark.seen {
-    color: var(--ash);
-    letter-spacing: 0;
-    font-size: 0.75rem;
-  }
-  @media (max-width: 480px) {
-    .tag {
-      display: none;
-    }
-    .tb-head {
-      gap: 5px;
-    }
-  }
-  .summary {
-    margin: 3px 0 0;
-    font-size: 0.78rem;
-    line-height: 1.4;
-    color: var(--ash);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .tb-respond {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  .tb-respond span {
-    font-weight: 800;
-    font-size: 0.9rem;
-    padding: 9px 28px;
-    border-radius: 12px;
-    border: 1px solid var(--copper);
-    background: var(--gunmetal);
   }
 
   /* Audiences */
@@ -713,13 +521,21 @@ const appLd = {
     font-weight: 700;
     font-size: 2.2rem;
     color: var(--smoke);
-    background: radial-gradient(circle at 30% 30%, var(--charcoal), var(--gunmetal));
+    background: radial-gradient(
+      circle at 30% 30%,
+      var(--charcoal),
+      var(--gunmetal)
+    );
     border: 3px solid var(--obsidian);
     box-shadow: 0 0 0 1px var(--iron);
   }
   .portrait + .portrait {
     margin-left: -28px;
-    background: radial-gradient(circle at 30% 30%, var(--ember), var(--gunmetal));
+    background: radial-gradient(
+      circle at 30% 30%,
+      var(--ember),
+      var(--gunmetal)
+    );
   }
   .founders h2 {
     max-width: 22ch;
