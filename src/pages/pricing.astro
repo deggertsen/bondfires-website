@@ -15,8 +15,9 @@ const tiers = [
       'Join public camps and camps you’re invited to',
       'Watch every Bondfire in your camps',
       'Respond with videos up to 5 minutes',
-      'Bookmark threads to come back to',
-      'The Ember Rail and notifications',
+      'Pin threads to keep them close',
+      'Emoji reactions, captions, and summaries',
+      'Your fires at the top of Home, plus notifications',
     ],
     cta: 'Get the app',
     href: '/download',
@@ -24,12 +25,13 @@ const tiers = [
   {
     name: 'Plus',
     tag: 'For people who start conversations',
-    blurb: 'Spark your own Bondfires in any camp, and run a hearth for the people closest to you.',
+    blurb: 'Spark your own Bondfires, and run a hearth for the people closest to you.',
     features: [
       'Everything in Free',
-      'Spark Bondfires in any camp you join',
+      'Spark Bondfires in your hearth and in public camps you join',
       'Your own hearth: one private camp for friends and family',
       '15-minute recordings',
+      'The full set of reaction emoji',
       '1 month of video storage in your hearth',
     ],
     featured: true,
@@ -43,14 +45,14 @@ const tiers = [
   {
     name: 'Pro',
     tag: 'For group leaders',
-    blurb: 'Create and run camps for your whole group, with no limit on video length.',
+    blurb: 'Create and lead camps for your whole group, with recordings up to three hours.',
     features: [
       'Everything in Premium',
-      'Create and manage public camps',
-      'Create private, invite-only camps',
+      'Create and lead invite-only camps for your group',
+      'Approve join requests and manage members',
       '3 kindling per month to keep camps lit',
       'Extra kindling packs when you need more camps',
-      'Unlimited video length',
+      'Recordings up to 3 hours',
     ],
     cta: 'For group leaders',
     href: '/for/groups',
@@ -103,7 +105,8 @@ const tiers = [
         <p>
           Kindling is how Pro members keep camps running. Each active camp you created uses one
           kindling per month; Pro includes three, and you can buy extra packs if your group needs more
-          camps. If a camp runs out of kindling it goes dormant, not deleted, until it’s re-lit.
+          camps. If a camp runs out of kindling you get a 30-day grace period to add more before it
+          goes inactive. It isn’t deleted.
         </p>
         <h3>Do the people in my group need to pay?</h3>
         <p>
@@ -113,7 +116,7 @@ const tiers = [
         <h3>How long can videos be?</h3>
         <p>
           As long as they need to be, within your plan: 5 minutes on Free, 15 on Plus, 30 on Premium,
-          unlimited on Pro. Camp leaders can also set a shorter limit for their own camp.
+          and up to 3 hours on Pro.
         </p>
         <h3>Billing</h3>
         <p>
@@ -181,6 +184,7 @@ const tiers = [
     padding: 0;
     display: grid;
     gap: 10px;
+    align-content: start;
     flex: 1;
   }
   .tier li {

@@ -21,7 +21,7 @@ export const FAQ: Faq[] = [
   },
   {
     q: 'What is a hearth?',
-    a: 'A hearth is a private camp just for you and the people you invite: close friends, siblings, your kids who moved away. You control who is in it. Hearth notifications also cut through mute, because those are the people you never want to miss.',
+    a: 'A hearth is a private camp just for you and the people you invite: close friends, siblings, your kids who moved away. You control who is in it. Hearths have their own notification setting, so you can keep them on even when you quiet everything else.',
   },
   {
     q: 'Is it free?',
@@ -35,7 +35,7 @@ export const FAQ: Faq[] = [
   },
   {
     q: 'I’m not comfortable on camera.',
-    a: 'Most people aren’t at first. You record in private, on your own time, and you can re-record before you post. Nobody is watching you live. After a few Bondfires, most people forget the camera is there.',
+    a: 'Most people aren’t at first. You record in private, on your own time. Nobody is watching you live. After a few Bondfires, most people forget the camera is there.',
   },
   {
     q: 'Who can see my videos?',
@@ -48,7 +48,7 @@ export const FAQ: Faq[] = [
   },
   {
     q: 'How long can a video be?',
-    a: 'As long as it needs to be, within your plan. Free members can respond with up to 5 minutes; Plus raises that to 15, Premium to 30, and Pro has no limit. Camp leaders can also set a shorter limit for their own camp if they want responses kept tight.',
+    a: 'As long as it needs to be, within your plan. Free members can respond with up to 5 minutes; Plus raises that to 15, Premium to 30, and Pro to 3 hours.',
   },
   {
     q: 'Can I bring my existing group?',
@@ -56,6 +56,6 @@ export const FAQ: Faq[] = [
   },
   {
     q: 'How do I delete my account?',
-    a: 'From the app: Profile → Settings → Delete account. Or follow the steps on the delete-account page. Your videos and data are removed on the schedule described there.',
+    a: 'From the app: Profile → Delete Account. Or follow the steps on the delete-account page. Your videos and data are removed on the schedule described there.',
   },
 ]

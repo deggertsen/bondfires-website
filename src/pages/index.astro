@@ -30,6 +30,44 @@ const audiences = [
   },
 ]
 
+const threadDemo = [
+  {
+    who: 'Marcus',
+    spark: true,
+    when: 'Nov 6, 8:12 PM',
+    tag: 'family',
+    tone: '#6B5B95',
+    reactions: '❤️ 🔥 4',
+    state: 'seen',
+    summary: 'Marcus admits he never apologised to his brother after the wedding, and asks how to start that call.',
+  },
+  {
+    who: 'Jake',
+    when: 'Nov 6, 11:40 PM',
+    tag: 'advice',
+    tone: '#4B6587',
+    reactions: '🙏 2',
+    state: 'now',
+    summary: 'Jake says start with the apology, not the explanation. He did it with his dad last spring and wishes he hadn’t waited.',
+  },
+  {
+    who: 'Theo',
+    when: 'Nov 7, 6:55 AM',
+    tag: 'support',
+    tone: '#8A5A44',
+    state: 'new',
+    summary: 'Theo offers to be the one Marcus calls right after, whatever happens.',
+  },
+  {
+    who: 'Ren',
+    when: 'Nov 7, 7:30 AM',
+    tag: 'advice',
+    tone: '#5B7B5A',
+    state: 'new',
+    summary: 'Ren suggests writing the first sentence down so it actually comes out.',
+  },
+]
+
 const faqLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -126,31 +164,49 @@ const appLd = {
           three people have answered, each in their own time, each with their own face.
         </p>
         <ul class="demo-points">
-          <li><strong>The Ember Rail</strong> sits at the top of Home. A copper ring means someone answered you. A gold dot means your spark is still waiting.</li>
+          <li><strong>Your fires, at the top of Home.</strong> A copper ring means a thread has new responses. A gold dot means your spark is still waiting for its first answer.</li>
           <li><strong>Threads, not feeds.</strong> Responses stack under the spark so a conversation stays a conversation.</li>
-          <li><strong>Captions, summaries, and tags, written for you.</strong> Every video is captioned and summarised, so you can skim a thread in seconds or find the one about the job offer in October.</li>
+          <li><strong>Captions, summaries, and tags, written for you.</strong> Every video is captioned, summarised, and tagged, so you can skim a thread in seconds or follow along with the sound off.</li>
+          <li><strong>Reactions, when you can’t record.</strong> Tap an emoji on any video to let them know it landed, then answer properly later.</li>
         </ul>
       </div>
-      <div class="demo-thread" aria-hidden="true">
-        <div class="spark">
-          <span class="av" style="background:#6B5B95">M</span>
-          <div>
-            <span class="who">Marcus <small>sparked · Thursday Guys</small></span>
-            <span class="ttl">The thing I didn’t say at dinner</span>
-            <span class="dur">7:05</span>
-          </div>
+      <!-- Mirrors the app's thread browser sheet (ThreadBrowser.tsx): who and
+           when on the first line, the AI summary below, NOW / NEW / seen on
+           the right. People and words are fictional. -->
+      <div class="demo-thread" role="img" aria-label="Rendering of a Bondfire thread in the app: Marcus’s spark and three video responses, each with a one-line summary">
+        <span class="handle"></span>
+        <div class="sheet-head">
+          <span class="sheet-title">The thing I didn’t say at dinner</span>
+          <span class="sheet-meta">4 videos · 2 new</span>
         </div>
-        <div class="resp">
-          <span class="av" style="background:#4B6587">J</span>
-          <div><span class="who">Jake <small>replied · 3h later</small></span><span class="dur">1:40</span></div>
-        </div>
-        <div class="resp">
-          <span class="av" style="background:#3C6E71">T</span>
-          <div><span class="who">Theo <small>replied · that night</small></span><span class="dur">4:02</span></div>
-        </div>
-        <div class="resp you">
-          <span class="av" style="background:#A04E24">D</span>
-          <div><span class="who">You <small>next morning, from the driveway</small></span><span class="dur rec">● Record</span></div>
+        {
+          threadDemo.map((v) => (
+            <div class={`tb-row ${v.state === 'now' ? 'now' : ''}`}>
+              <span class="av" style={`background:${v.tone}`}>{v.who[0]}</span>
+              <div class="tb-lines">
+                <div class="tb-head">
+                  {v.spark && (
+                    <svg class="tb-flame" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+                      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+                    </svg>
+                  )}
+                  <span class="tb-who">{v.who}</span>
+                  <span class="when">{v.when}</span>
+                  <span class="tag">{v.tag}</span>
+                  <span class="tb-end">
+                    {v.reactions && <span class="react">{v.reactions}</span>}
+                    {v.state === 'now' && <span class="mark now">NOW</span>}
+                    {v.state === 'new' && <span class="mark new">NEW</span>}
+                    {v.state === 'seen' && <span class="mark seen">✓</span>}
+                  </span>
+                </div>
+                <p class="summary">{v.summary}</p>
+              </div>
+            </div>
+          ))
+        }
+        <div class="tb-respond">
+          <span>Respond</span>
         </div>
       </div>
     </div>
@@ -229,8 +285,8 @@ const appLd = {
           <p class="eyebrow">Free to join and respond</p>
           <h2>Join a camp, watch everything, reply with up to five minutes of video. Free.</h2>
           <p class="muted">
-            Starting your own Bondfires and running a hearth for your closest people is Plus. Leading
-            camps for a whole group is Pro.
+            Starting your own Bondfires and running a hearth for your closest people is Plus, or
+            Premium to keep every hearth video. Leading camps for a whole group is Pro.
           </p>
         </div>
         <a href="/pricing" class="btn btn-secondary btn-lg">See all plans</a>
@@ -434,42 +490,68 @@ const appLd = {
   .demo-points strong {
     color: var(--smoke);
   }
-  .demo-thread {
-    display: grid;
-    gap: 10px;
-    max-width: 440px;
-    margin: 0 auto;
-  }
-  .spark,
-  .resp {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: var(--gunmetal);
-    border: 1px solid var(--iron);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-  }
-  .spark {
-    border-color: var(--copper);
-    box-shadow: 0 0 40px -18px var(--copper);
-  }
-  .resp {
-    margin-left: var(--space-6);
-  }
-  .resp.you {
-    border-style: dashed;
-  }
-  .spark > div,
-  .resp > div {
-    display: grid;
-    gap: 2px;
-    flex: 1;
+  /* Thread browser sheet (mirrors ThreadBrowser.tsx in the app) */
+  .demo-grid > * {
     min-width: 0;
   }
-  .av {
+  .demo-thread {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 8px 10px 14px;
+    background: var(--iron);
+    border-radius: 22px;
+    box-shadow:
+      0 30px 80px -30px rgba(0, 0, 0, 0.9),
+      0 0 80px -30px var(--copper);
+  }
+  .handle {
+    justify-self: center;
     width: 40px;
-    height: 40px;
+    height: 5px;
+    border-radius: 3px;
+    background: #4a4d54;
+    margin-bottom: 6px;
+  }
+  .sheet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 4px 8px 8px;
+  }
+  .sheet-title {
+    min-width: 0;
+    font-weight: 800;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sheet-meta {
+    font-size: 0.75rem;
+    color: var(--ash);
+    white-space: nowrap;
+  }
+  .tb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+  }
+  .tb-row.now {
+    border-color: var(--copper);
+    background: var(--gunmetal);
+  }
+  .av {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
@@ -478,27 +560,109 @@ const appLd = {
     color: #fff;
     flex-shrink: 0;
   }
-  .who {
-    font-weight: 600;
-    font-size: 0.95rem;
+  .tb-lines {
+    flex: 1;
+    min-width: 0;
   }
-  .who small {
-    font-weight: 400;
+  .tb-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+  .tb-flame {
+    fill: none;
+    stroke: var(--copper);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  .tb-who {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .when {
+    font-size: 0.7rem;
     color: var(--ash);
-    margin-left: 6px;
+    white-space: nowrap;
   }
-  .ttl {
+  .tag {
+    font-size: 0.65rem;
+    color: var(--ash);
+    background: #44474e;
+    padding: 1px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .tb-end {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .react {
+    font-size: 0.68rem;
     color: var(--smoke);
-    font-size: 1rem;
+    background: var(--gunmetal);
+    border: 1px solid #44474e;
+    padding: 1px 7px;
+    border-radius: 9px;
+    white-space: nowrap;
   }
-  .dur {
-    font-size: 0.8rem;
-    color: var(--ash);
-    font-variant-numeric: tabular-nums;
+  .mark {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
   }
-  .dur.rec {
+  .mark.now {
     color: var(--copper);
-    font-weight: 600;
+  }
+  .mark.new {
+    color: var(--obsidian);
+    background: var(--gold);
+    padding: 1px 5px;
+    border-radius: 5px;
+  }
+  .mark.seen {
+    color: var(--ash);
+    letter-spacing: 0;
+    font-size: 0.75rem;
+  }
+  @media (max-width: 480px) {
+    .tag {
+      display: none;
+    }
+    .tb-head {
+      gap: 5px;
+    }
+  }
+  .summary {
+    margin: 3px 0 0;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--ash);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tb-respond {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .tb-respond span {
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 9px 28px;
+    border-radius: 12px;
+    border: 1px solid var(--copper);
+    background: var(--gunmetal);
   }
 
   /* Audiences */

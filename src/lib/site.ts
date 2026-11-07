@@ -15,8 +15,8 @@ export const PLAY_TESTING_URL = 'https://play.google.com/apps/testing/org.bondfi
 /** Where the site sends someone who wants the app right now. */
 export const IOS_DOWNLOAD_URL = TESTFLIGHT_URL
 export const ANDROID_DOWNLOAD_URL = PLAY_TESTING_URL
-export const IOS_MIN = 'iOS 15.0 or later'
-export const ANDROID_MIN = 'Android 8.0 or later'
+export const IOS_MIN = 'iOS 16.4 or later'
+export const ANDROID_MIN = 'Android 7.0 or later'
 
 export const SUPPORT_EMAIL = 'support@bondfires.org'
 export const PRIVACY_EMAIL = 'privacy@bondfires.org'

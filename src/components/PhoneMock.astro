@@ -1,32 +1,86 @@
 ---
 /**
  * A phone frame. Pass `src` to show a real app screenshot (preferred).
- * Without `src` it renders a faithful CSS rendering of the Home screen, built
- * from the real UI structure (Ember Rail on top, unread threads below), so the
- * page never ships an empty frame.
+ * Without `src` it renders a CSS rendering of the Home screen, mirroring the
+ * app's own layout (apps/mobile/app/(main)/(tabs)/feed.tsx, EmberRail.tsx and
+ * BondfireRow.tsx in the app repo): header with the Spark button, the Ember
+ * Rail of your fires, "New responses" thumbnail rows, Discover search and
+ * filter pills, and the Camps / Home / Spark / Profile tab bar. People and
+ * threads are fictional; video thumbnails are drawn as silhouettes.
  */
 interface Props {
   src?: string
   alt?: string
   class?: string
-  /** Which built-in rendering to show when there is no screenshot. */
-  screen?: 'home' | 'thread' | 'camps'
   tilt?: boolean
 }
-const { src, alt = 'The Bondfires app', class: className = '', screen = 'home', tilt = false } = Astro.props
+const { src, alt = 'The Bondfires app', class: className = '', tilt = false } = Astro.props
 
+/** Warm, muted video-frame tones for the drawn thumbnails. */
+const tones = {
+  plum: '#6B5B95',
+  teal: '#3C6E71',
+  rust: '#8A5A44',
+  slate: '#4B6587',
+  moss: '#5B7B5A',
+}
+
+// The rail lists threads (not people), unread first with a copper ring, then
+// quiet ones dimmed. Your own spark with no answers yet carries a gold dot.
 const rail = [
-  { name: 'Marcus', unread: 3, tone: '#6B5B95' },
-  { name: 'Dad', unread: 1, tone: '#3C6E71' },
-  { name: 'Theo', unread: 0, tone: '#8A5A44', spark: true },
-  { name: 'Jake', unread: 2, tone: '#4B6587' },
-  { name: 'Ren', unread: 0, tone: '#5B7B5A' },
+  { label: 'The thing I didn’t say', tone: tones.plum, state: 'unread' },
+  { label: 'Job offer. Take it?', tone: tones.teal, state: 'unread' },
+  { label: 'Week 6', tone: tones.slate, state: 'unread' },
+  { label: 'Kitchen, round two', tone: tones.rust, state: 'spark' },
+  { label: 'Sunday reset', tone: tones.moss, state: 'quiet' },
 ]
-const threads = [
-  { title: 'The thing I didn’t say at dinner', camp: 'Thursday Guys', who: 'Marcus', when: '2h', unread: 3, tone: '#6B5B95' },
-  { title: 'Job offer. Take it?', camp: 'Hearth', who: 'Dad', when: '5h', unread: 1, tone: '#3C6E71' },
-  { title: 'Week 6 of the program', camp: 'Basecamp', who: 'Jake', when: '1d', unread: 2, tone: '#4B6587' },
+const totalFires = 12
+
+const rows = [
+  {
+    title: 'The thing I didn’t say at dinner',
+    who: 'Marcus',
+    when: '2h',
+    responses: 3,
+    camp: 'Thursday Guys',
+    tone: tones.plum,
+    faces: [
+      ['J', tones.slate],
+      ['T', tones.rust],
+      ['A', tones.moss],
+    ],
+  },
+  {
+    title: 'Job offer. Take it?',
+    who: 'Dad',
+    when: '5h',
+    responses: 1,
+    camp: 'Family',
+    tone: tones.teal,
+    faces: [['K', tones.plum]],
+  },
+  {
+    title: 'Week 6 of the program',
+    who: 'Jake',
+    when: '1d',
+    responses: 2,
+    camp: 'Basecamp',
+    tone: tones.slate,
+    faces: [
+      ['R', tones.moss],
+      ['M', tones.plum],
+    ],
+  },
 ]
+const unread = rows.length
+const camps = ['All', 'Thursday Guys', 'Family', 'Basecamp']
+const modes = ['Discover', 'Recent', 'Active', 'Unseen']
+
+/** A video thumbnail: a head-and-shoulders silhouette over a warm gradient. */
+const thumb = (tone: string) =>
+  `background:radial-gradient(circle at 50% 40%, rgba(255,255,255,.22) 0 17%, transparent 18%),` +
+  `radial-gradient(ellipse 46% 34% at 50% 100%, rgba(255,255,255,.18) 0 98%, transparent 100%),` +
+  `linear-gradient(160deg, ${tone}, #1a1b1e)`
 ---
 
 <div class={`phone ${tilt ? 'tilt' : ''} ${className}`}>
@@ -35,54 +89,130 @@ const threads = [
       src ? (
         <img src={src} alt={alt} width="390" height="844" loading="eager" decoding="async" />
       ) : (
-        <div class={`ui ui-${screen}`} role="img" aria-label="Rendering of the Bondfires home screen showing the Ember Rail and unread threads">
+        <div
+          class="ui"
+          role="img"
+          aria-label="Rendering of the Bondfires Home screen: your fires along the top, threads with new responses, and Discover"
+        >
           <div class="status">
             <span>9:41</span>
             <span class="dots"><i></i><i></i><i></i></span>
           </div>
-          <div class="title">
-            <span class="h">Home</span>
-            <span class="avatar you">D</span>
+
+          <div class="head">
+            <div>
+              <span class="h">Home</span>
+              <span class="sub">{unread} fires have new responses</span>
+            </div>
+            <span class="spark-btn">Spark</span>
           </div>
+
           <div class="rail">
-            <div class="tile lead">
-              <span class="flame">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="#D97736" aria-hidden="true"><path d="M12 2c.5 3.3 2.5 5.1 4.3 7.2 1.8 2 3.4 4.1 3.4 7.1 0 4.3-3.5 7.4-7.7 7.4S4.3 20.6 4.3 16.3c0-2.8 1.4-4.7 3-6.5 0 1.7.7 2.9 1.9 3.4C8.7 8.9 10.3 5.8 12 2Z"/></svg>
+            <div class="tile">
+              <span class="ring all">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+                </svg>
+                <span class="count">{totalFires}</span>
               </span>
               <span class="lbl">All fires</span>
             </div>
             {rail.map((r) => (
-              <div class={`tile ${r.unread ? 'unread' : ''} ${r.spark ? 'spark' : ''}`}>
+              <div class={`tile ${r.state}`}>
                 <span class="ring">
-                  <span class="avatar" style={`background:${r.tone}`}>{r.name[0]}</span>
-                  {r.unread > 0 && <span class="badge">{r.unread}</span>}
-                  {r.spark && <span class="sparkdot"></span>}
+                  <span class="vid" style={thumb(r.tone)} />
+                  {r.state === 'unread' && <span class="dot" />}
+                  {r.state === 'spark' && <span class="sparkdot" />}
                 </span>
-                <span class="lbl">{r.name}</span>
+                <span class="lbl">{r.label}</span>
               </div>
             ))}
           </div>
-          <div class="sec">New for you</div>
-          <div class="list">
-            {threads.map((t) => (
+
+          <div class="sec">New responses</div>
+          <div class="rows">
+            {rows.map((t) => (
               <div class="row">
-                <span class="avatar lg" style={`background:${t.tone}`}>{t.who[0]}</span>
+                <span class="thumb" style={thumb(t.tone)} />
                 <span class="meta">
-                  <span class="t">{t.title}</span>
-                  <span class="s">{t.camp} · {t.who} · {t.when}</span>
+                  <span class="top">
+                    <span class="txt">
+                      <span class="t">{t.title}</span>
+                      <span class="s">
+                        {t.who} · {t.when} · New
+                      </span>
+                    </span>
+                    <span class="respond">Respond</span>
+                  </span>
+                  <span class="bottom">
+                    <span class="faces">
+                      {t.faces.map(([i, c]) => (
+                        <span class="face" style={`background:${c}`}>
+                          {i}
+                        </span>
+                      ))}
+                    </span>
+                    <span class="replies">
+                      <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true">
+                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                      </svg>
+                      {t.responses} {t.responses === 1 ? 'response' : 'responses'}
+                    </span>
+                    <span class="camp">{t.camp}</span>
+                  </span>
                 </span>
-                <span class="count">{t.unread}</span>
               </div>
             ))}
           </div>
+
           <div class="sec">Discover</div>
-          <div class="disc">
-            <span class="chip">Dads of teenagers</span>
-            <span class="chip">Sunday reset</span>
-            <span class="chip">Founders, quietly</span>
+          <div class="search">
+            <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            Search creator, camp, or tags
           </div>
+          <div class="pills">
+            {camps.map((c, i) => (
+              <span class={`pill camp-pill ${i === 0 ? 'on' : ''}`}>{c}</span>
+            ))}
+          </div>
+          <div class="pills">
+            {modes.map((m, i) => (
+              <span class={`pill ${i === 0 ? 'on' : ''}`}>{m}</span>
+            ))}
+          </div>
+
           <div class="tabs">
-            <span>Camps</span><span class="on">Home</span><span class="sparkbtn">+</span><span>Profile</span>
+            <span class="tab">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+                <line x1="9" x2="9" y1="3" y2="18" />
+                <line x1="15" x2="15" y1="6" y2="21" />
+              </svg>
+              Camps
+            </span>
+            <span class="tab on">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              Home
+            </span>
+            <span class="tab">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+              </svg>
+              Spark
+            </span>
+            <span class="tab">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Profile
+            </span>
           </div>
         </div>
       )
@@ -134,23 +264,32 @@ const threads = [
     object-fit: cover;
   }
 
-  /* CSS rendering of the Home screen */
+  /* CSS rendering of the Home screen. Sizes are the app's points × ~0.8. */
   .ui {
+    position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 14px 14px 0;
-    font-size: 11.5px;
+    padding-top: 14px;
+    font-size: 11px;
     color: var(--smoke);
     font-family: var(--body);
+    overflow: hidden;
+  }
+  .ui svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
   }
   .status {
     display: flex;
     justify-content: space-between;
     font-size: 11px;
     font-weight: 600;
-    padding: 4px 8px 0;
-    color: var(--smoke);
+    padding: 4px 22px 0;
   }
   .dots {
     display: inline-flex;
@@ -164,203 +303,303 @@ const threads = [
     background: var(--smoke);
     opacity: 0.85;
   }
-  .title {
+
+  .head {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: 26px 2px 12px;
+    align-items: flex-end;
+    gap: 10px;
+    margin: 20px 13px 12px;
   }
-  .title .h {
+  .head .h {
+    display: block;
     font-family: var(--display);
-    font-weight: 700;
-    font-size: 22px;
+    font-weight: 900;
+    font-size: 21px;
     letter-spacing: -0.02em;
+    line-height: 1.1;
   }
-  .avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-weight: 600;
-    font-size: 12px;
-    color: #fff;
-    background: var(--charcoal);
+  .head .sub {
+    display: block;
+    font-size: 10px;
+    color: var(--ash);
+    margin-top: 2px;
   }
-  .avatar.you {
-    background: var(--ember);
+  .spark-btn {
+    font-weight: 800;
+    font-size: 10.5px;
+    padding: 6px 12px;
+    border-radius: 9px;
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
   }
-  .avatar.lg {
-    width: 38px;
-    height: 38px;
-    font-size: 14px;
-  }
+
   .rail {
     display: flex;
-    gap: 10px;
+    gap: 9px;
+    padding: 2px 13px 4px;
     overflow: hidden;
-    padding: 2px 0 6px;
   }
   .tile {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    width: 52px;
+    gap: 4px;
+    width: 51px;
     flex-shrink: 0;
   }
   .tile .lbl {
-    font-size: 9.5px;
-    color: var(--ash);
+    max-width: 100%;
+    font-size: 8px;
+    font-weight: 600;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .tile.lead .flame {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: var(--gunmetal);
-    border: 1px solid var(--iron);
+  .tile.quiet .lbl,
+  .tile.spark .lbl {
+    color: var(--ash);
   }
   .ring {
     position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1.6px solid var(--iron);
+    padding: 1.6px;
     display: flex;
+  }
+  .ring.all {
+    border-style: dashed;
+    border-width: 1.2px;
+    background: var(--gunmetal);
     align-items: center;
     justify-content: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-  }
-  .ring .avatar {
-    width: 38px;
-    height: 38px;
+    color: var(--copper);
   }
   .tile.unread .ring {
     border-color: var(--copper);
-    box-shadow: 0 0 14px -4px var(--copper);
   }
-  .badge {
+  .vid {
+    flex: 1;
+    border-radius: 50%;
+  }
+  .tile.quiet .vid,
+  .tile.spark .vid {
+    opacity: 0.6;
+  }
+  .count {
     position: absolute;
-    top: -3px;
-    right: -3px;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
+    bottom: -2px;
+    right: -4px;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 3px;
     border-radius: 8px;
-    background: var(--copper);
-    color: #fff;
-    font-size: 9.5px;
-    font-weight: 700;
+    background: var(--iron);
+    border: 1.6px solid var(--obsidian);
+    color: var(--smoke);
+    font-size: 7.5px;
+    font-weight: 900;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--obsidian);
+  }
+  .dot {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--copper);
+    border: 1.6px solid var(--obsidian);
   }
   .sparkdot {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 12px;
-    height: 12px;
+    top: -1px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--gold);
-    border: 2px solid var(--obsidian);
+    border: 1.6px solid var(--obsidian);
   }
+
   .sec {
-    font-size: 9.5px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 10.5px;
+    font-weight: 900;
     color: var(--ash);
-    margin: 14px 2px 8px;
+    margin: 12px 13px 2px;
   }
-  .list {
+  .rows {
     display: grid;
-    gap: 8px;
   }
   .row {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: var(--gunmetal);
+    padding: 9px 0;
+    margin: 0 13px;
+  }
+  .row + .row {
+    border-top: 1px solid rgba(51, 53, 58, 0.6);
+  }
+  .thumb {
+    width: 58px;
+    height: 58px;
+    border-radius: 13px;
     border: 1px solid var(--iron);
-    border-radius: 12px;
-    padding: 9px 10px;
+    flex-shrink: 0;
   }
-  .row .meta {
-    display: grid;
-    gap: 2px;
-    min-width: 0;
+  .meta {
     flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: 5px;
   }
-  .row .t {
-    font-weight: 600;
-    font-size: 11.5px;
+  .top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .txt {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: 1px;
+  }
+  .txt .t {
+    font-weight: 900;
+    font-size: 12.5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .row .s {
+  .txt .s {
     font-size: 9.5px;
     color: var(--ash);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
-  .row .count {
-    width: 20px;
-    height: 20px;
+  .respond {
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 5px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--copper);
+    flex-shrink: 0;
+  }
+  .bottom {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+  }
+  .faces {
+    display: flex;
+  }
+  .face {
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: var(--copper);
+    border: 1.5px solid var(--obsidian);
     color: #fff;
-    font-size: 10px;
+    font-size: 7.5px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .disc {
-    display: flex;
-    gap: 6px;
-    overflow: hidden;
+  .face + .face {
+    margin-left: -6px;
   }
-  .chip {
+  .replies {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9.5px;
+    color: var(--ash);
     white-space: nowrap;
-    font-size: 10px;
-    padding: 6px 10px;
-    border-radius: 999px;
+  }
+  .camp {
+    min-width: 0;
+    font-size: 8.5px;
+    font-weight: 800;
+    color: var(--copper);
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--gunmetal);
+    border: 1px solid var(--iron);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 6px 13px 0;
+    padding: 8px 10px;
+    border-radius: 11px;
+    background: var(--gunmetal);
     border: 1px solid var(--iron);
     color: var(--ash);
+    font-size: 10px;
   }
+  .pills {
+    display: flex;
+    gap: 6px;
+    margin: 8px 13px 0;
+    overflow: hidden;
+  }
+  .pill {
+    white-space: nowrap;
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--iron);
+    background: var(--gunmetal);
+  }
+  .pill.camp-pill {
+    min-width: 58px;
+    text-align: center;
+    border-radius: 9px;
+    font-weight: 900;
+  }
+  .pill.on {
+    background: var(--copper);
+    border-color: var(--copper);
+    color: var(--obsidian);
+  }
+
   .tabs {
-    margin-top: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    padding: 12px 0 18px;
+    padding: 7px 8px 20px;
+    background: var(--gunmetal);
     border-top: 1px solid var(--iron);
-    font-size: 10px;
     color: var(--ash);
   }
-  .tabs .on {
-    color: var(--copper);
-    font-weight: 600;
-  }
-  .sparkbtn {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--copper), var(--ember));
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
+  .tab {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    line-height: 1;
+    gap: 3px;
+    font-size: 7.5px;
+    font-weight: 600;
+    width: 52px;
+  }
+  .tab svg {
+    width: 18px;
+    height: 18px;
+  }
+  .tab.on {
+    color: var(--copper);
   }
 </style>
